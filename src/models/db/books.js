@@ -2,8 +2,10 @@ const db = require('./db');
 
 const getAllBooks = function () {
   return db.query(`SELECT * FROM books`)
-    .then(res => console.log(res))
+    .then(users => users.rows)
     .catch(err => console.error(err));
 };
 
-getAllBooks();
+module.exports = {
+  getAllBooks,
+};
