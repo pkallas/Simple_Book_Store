@@ -2,11 +2,11 @@
   "name": "simple_book_store",
   "version": "1.0.0",
   "description": "Learner's Guild Simple Book Store App",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "db-init": "psql < seeds/schema.sql && psql < seeds/load-data.sql",
-    "start": "nodemon src/server/server.js"
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
