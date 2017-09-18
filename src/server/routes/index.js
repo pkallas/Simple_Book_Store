@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const books = require('../models/db/books');
 
 router.get('/', (request, response) => {
-  response.render('books/index');
+  books.getAllBooks()
+  .then(books => response.render('books/index', books))
+  .catch(error => console.error(error));
 });
 
 module.exports = router;
