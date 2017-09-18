@@ -14,8 +14,6 @@ CREATE TABLE users (
 CREATE TABLE books (
   id SERIAL PRIMARY KEY,
   title VARCHAR (255),
-  author VARCHAR(255),
-  summary TEXT,
   price NUMERIC(100, 2),
   img_url VARCHAR(255),
   in_stock INTEGER,
