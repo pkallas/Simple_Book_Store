@@ -1,0 +1,27 @@
+{
+  "name": "simple_book_store",
+  "version": "1.0.0",
+  "description": "Learner's Guild Simple Book Store App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pkallas/Simple_Book_Store.git"
+  },
+  "author": "pkallas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pkallas/Simple_Book_Store/issues"
+  },
+  "homepage": "https://github.com/pkallas/Simple_Book_Store#readme",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "pg-promise": "^6.7.1"
+  }
+}
