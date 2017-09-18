@@ -1,0 +1,15 @@
+<nav>
+  <form method="get" action="/" id="search-bar">
+    <input type="search" name="query" placeholder="Search for Author, Title, or Genre" autofocus>
+    <input type="submit" value="Search">
+  </form>
+  <% if (admin) {%>
+    <a href="/books/new">Add A Book></a>
+  <% } %>
+  <% if (session) {%>
+    <a href="/logout">Log Out</a>
+  <% } else { %>
+    <a href="/login">Log In</a>
+    <a href="/signup">Sign Up</a>
+  <% } %>
+</nav>
