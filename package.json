@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db-init": "psql < seeds/schema.sql && psql < seeds/load-data.sql"
+    "db-init": "psql < seeds/schema.sql && psql < seeds/load-data.sql",
+    "start": "nodemon src/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "body-parser": "^1.18.1",
+    "ejs": "^2.5.7",
     "express": "^4.15.4",
     "pg-promise": "^6.7.1"
   }
