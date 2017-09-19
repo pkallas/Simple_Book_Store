@@ -26,7 +26,7 @@ const getOneBook = bookID => {
   .catch(err => console.error(err));
 };
 
-const searchForBooks = searchQuery => {
+const searchForBooks = (searchQuery, offSet) => {
   return db.query(`SELECT title, price, img_url, first_name, last_name FROM books
     JOIN authors_books ON books.id = authors_books.book_id
     JOIN authors ON authors.id = authors_books.author_id
@@ -36,7 +36,8 @@ const searchForBooks = searchQuery => {
     OR LOWER(first_name) LIKE $1
     OR LOWER(last_name) LIKE $1
     OR LOWER(name) LIKE $1
-    GROUP BY title, price, img_url, first_name, last_name`, [searchQuery])
+    GROUP BY title, price, img_url, first_name, last_name
+    OFFSET $2 LIMIT 10`, [searchQuery, offSet])
     .then(book => book.rows)
     .catch(err => console.error(err));
 };
