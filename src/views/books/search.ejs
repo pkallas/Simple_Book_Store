@@ -2,10 +2,10 @@
 
 <ul class="book-list" id="search-books">
   <% if(books) {%>
-    <% books.forEach(function(book) { %>
+    <% books.forEach(function(book) {%>
       <li>
-        <a href="/books/<%=book.id>">
-          <img src=<%book.img_url%>>
+        <a href="/books/<%=book.id%>">
+          <img src=<%=book.img_url%>>
           <div id="search-title">
             <%=book.title%>
           </div>
