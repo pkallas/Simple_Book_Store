@@ -22,4 +22,5 @@ const getOneBook = bookID => {
 
 module.exports = {
   getAllBooks,
+  getOneBook,
 };
