@@ -4,7 +4,7 @@ const books = require('../../models/db/books');
 const bookRoutes = require('./books');
 
 router.get('/', (request, response) => {
-  books.getAllBookImages()
+  books.getAllBookImagesId()
   .then(books => response.render('books/index', { books }))
   .catch(error => console.error(error));
 });
