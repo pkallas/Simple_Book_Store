@@ -10,10 +10,9 @@ router.get('/books/search', (request, response) => {
     .replace(/ *$/, '%')
     .replace(/ +/g, '%');
   if (request.query.start) {
-    // request.query.start++;
-    let offset = request.query.start;
+    offset = request.query.start;
   } else {
-    let offset = 0;
+    offset = 0;
     request.query.start = 0;
   }
 
