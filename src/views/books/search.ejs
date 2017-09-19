@@ -17,6 +17,11 @@
           $<%=book.price%>
         </div>
     <% }) %>
+      <% offset = parseInt(offset) + 10 %>
+    <div id="search-next-page"><a href="search?search=<%=searchTerm%>&amp;start=<%=offset%>">
+      Next Page
+    </a>
+  </div>
   <% } %>
 </ul>
 

@@ -3,8 +3,8 @@ const router = express.Router();
 const books = require('../../models/db/books');
 
 router.get('/books/search', (request, response) => {
-  let offset = 0;
-  const searchTerm = request.query.search
+  let offset;
+  let searchTerm = request.query.search
     .toLowerCase()
     .replace(/^ */, '%')
     .replace(/ *$/, '%')
@@ -13,12 +13,12 @@ router.get('/books/search', (request, response) => {
     offset = request.query.start;
   } else {
     offset = 0;
-    request.query.start = 0;
+    // request.query.start = 0;
   }
 
-  books.searchForBooks(searchTerm)
+  books.searchForBooks(searchTerm, offset)
     .then(books => {
-      response.render('books/search', { books, offset });
+      response.render('books/search', { books, offset, searchTerm: request.query.search });
     })
     .catch(err => console.log(err));
 });
