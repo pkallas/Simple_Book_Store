@@ -10,19 +10,21 @@ router.get('/books/:id', (request, response) => {
 });
 
 router.get('/books/search', (request, response) => {
-  const searchTerm = request.body.query
+  const searchTerm = request.query.search
     .replace(/^ */, '%')
     .replace(/ *$/, '%')
     .replace(/ +/g, '%');
   if (request.query.start) {
+    // request.query.start++;
     let offset = request.query.start;
   } else {
     let offset = 0;
+    request.query.start = 0;
   }
 
-  searchForBooks(searchTerm)
+  books.searchForBooks(searchTerm)
     .then(books => {
-      response.render('search', { books });
+      response.render('books/search', { books, offset });
     })
     .catch(err => console.log(err));
 });
