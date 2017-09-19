@@ -9,4 +9,22 @@ router.get('/books/:id', (request, response) => {
   .catch(error => console.error(error));
 });
 
+router.get('/books/search', (request, response) => {
+  const searchTerm = request.body.query
+    .replace(/^ */, '%')
+    .replace(/ *$/, '%')
+    .replace(/ +/g, '%');
+  if (request.query.start) {
+    let offset = request.query.start;
+  } else {
+    let offset = 0;
+  }
+
+  searchForBooks(searchTerm)
+    .then(books => {
+      response.render('search', { books });
+    })
+    .catch(err => console.log(err));
+});
+
 module.exports = router;
