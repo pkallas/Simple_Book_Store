@@ -1,7 +1,7 @@
 <nav>
   <a href="/">Home</a>
-  <form method="get" action="/" id="search-bar">
-    <input type="search" name="query" placeholder="Search for Author, Title, or Genre" autofocus>
+  <form method="get" action="/books/search" id="search-bar">
+    <input type="search" name="search" placeholder="Search for Author, Title, or Genre" autofocus>
     <input type="submit" value="Search">
   </form>
   <% if (admin) {%>
