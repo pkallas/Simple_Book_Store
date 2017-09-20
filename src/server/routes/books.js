@@ -13,7 +13,6 @@ router.get('/books/search', (request, response) => {
     offset = request.query.start;
   } else {
     offset = 0;
-    // request.query.start = 0;
   }
 
   books.searchForBooks(searchTerm, offset)
