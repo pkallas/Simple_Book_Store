@@ -2,13 +2,11 @@ const db = require('./db');
 
 const getAllBooks = () => {
   return db.query(`SELECT * FROM books`)
-    .then(books => books.rows)
     .catch(err => console.error(err));
 };
 
 const getAllBookImagesId = () => {
   return db.query(`SELECT id, img_url FROM books`)
-    .then(books => books.rows)
     .catch(err => console.error(err));
 };
 
@@ -22,7 +20,7 @@ const getOneBook = bookID => {
   WHERE books.id = $1
   GROUP BY title, price, img_url, in_stock, isbn, publisher, first_name, last_name`,
   [bookID])
-  .then(book => book.rows[0])
+  .then(book => book[0])
   .catch(err => console.error(err));
 };
 
@@ -38,9 +36,19 @@ const searchForBooks = (searchQuery, offSet) => {
     OR LOWER(name) LIKE $1
     GROUP BY books.id, title, price, img_url, first_name, last_name
     OFFSET $2 LIMIT 10`, [searchQuery, offSet])
-    .then(book => book.rows)
     .catch(err => console.error(err));
 };
+
+const updateBookGenres = (newGenreName, bookId, oldGenreName) => {
+  return db.query(`BEGIN;
+    UPDATE genres_books SET genre_id = (SELECT id FROM genres WHERE name = $1)
+    WHERE genres_books.book_id = $2
+    AND genres_books.genre_id = (SELECT id FROM genres WHERE name = $3);
+    COMMIT;`, [newGenreName, bookId, oldGenreName])
+    .catch(err => console.error(err));
+};
+
+// const updateBooksTable
 
 module.exports = {
   getAllBooks,

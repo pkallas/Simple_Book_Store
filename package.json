@@ -23,9 +23,8 @@
   },
   "dependencies": {
     "body-parser": "^1.18.1",
-    "dotenv": "^4.0.0",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
-    "pg": "^7.3.0"
+    "pg-promise": "^6.8.0"
   }
 }

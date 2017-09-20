@@ -1,12 +1,5 @@
-require('dotenv').config();
-const { Client } = require('pg');
-const client = new Client({
-  user: process.env.DATABASE_USER,
-  host: process.env.DATABASE_ENV,
-  database: 'simple_book_store',
-  port: process.env.DATABASE_PORT,
-});
+const pgp = require('pg-promise')();
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/simple_book_store';
+const db = pgp(connectionString);
 
-client.connect();
-
-module.exports = client;
+module.exports = db;
