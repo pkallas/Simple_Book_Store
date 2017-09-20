@@ -2,12 +2,12 @@ const db = require('./db');
 
 const getAllBooks = () => {
   return db.query(`SELECT * FROM books`)
-    .catch(err => console.error(err));
+    .catch(error => console.error(error));
 };
 
 const getAllBookImagesId = () => {
   return db.query(`SELECT id, img_url FROM books`)
-    .catch(err => console.error(err));
+    .catch(error => console.error(error));
 };
 
 const getOneBook = bookID => {
@@ -21,7 +21,7 @@ const getOneBook = bookID => {
   GROUP BY title, price, img_url, in_stock, isbn, publisher, first_name, last_name`,
   [bookID])
   .then(book => book[0])
-  .catch(err => console.error(err));
+  .catch(error => console.error(error));
 };
 
 const searchForBooks = (searchQuery, offSet) => {
@@ -36,78 +36,99 @@ const searchForBooks = (searchQuery, offSet) => {
     OR LOWER(name) LIKE $1
     GROUP BY books.id, title, price, img_url, first_name, last_name
     OFFSET $2 LIMIT 10`, [searchQuery, offSet])
-    .catch(err => console.error(err));
+    .catch(error => console.error(error));
 };
 
 const updateBookGenres = (newGenreName, bookId, oldGenreName) => {
   return db.tx(transaction => {
-    return transaction.oneOrNone(`SELECT id FROM genres WHERE name = $1 RETURNING id`, [newGenreName])
+    return transaction.oneOrNone('SELECT id FROM genres WHERE LOWER(name) = LOWER($1)', [newGenreName])
       .then(genreId => {
         if (!genreId) {
           return transaction.query(`
-            INSERT INTO genres(name) VALUES ($1);
-            UPDATE genres_books SET genre_id = (SELECT id FROM genres WHERE name = $1)
-            WHERE genres_books.book_id = $2
-            AND genres_books.genre_id = (SELECT id FROM genres WHERE name = $3);
-            `, [newGenreName, bookId, oldGenreName]
-          );
+              INSERT INTO genres (name) VALUES ($1) RETURNING id
+               `, [newGenreName])
+               .then(ids => {
+                return transaction.query(`
+                 UPDATE genres_books SET genre_id = $1
+                 WHERE genres_books.book_id = $2
+                 AND genres_books.genre_id = (SELECT id FROM genres WHERE name = $3);
+                 `, [ids[0].id, bookId, oldGenreName]);
+              })
+               .catch(console.error);
         } else {
-          transaction.query(`
-          UPDATE genres_books SET genre_id = (SELECT id FROM genres WHERE name = $1)
-          WHERE genres_books.book_id = $2
-          AND genres_books.genre_id = (SELECT id FROM genres WHERE name = $3)`,
-          [newGenreName, bookId, oldGenreName]);
+          return transaction.query(`
+            UPDATE genres_books SET genre_id = (SELECT id FROM genres WHERE LOWER(name) = LOWER($1))
+	          WHERE genres_books.book_id = $2
+	          AND genres_books.genre_id = (SELECT id FROM genres WHERE name = $3);
+            `, [newGenreName, bookId, oldGenreName]);
         }
       })
-      .catch(err => {
-        console.error({ message: 'updateBookGenres Transaction Failed',
+      .catch(error => {
+        console.error({ message: 'UpdateBookGenres Inner Transaction failed',
                         arguments: arguments, });
-        throw err;
+        throw error;
       });
   })
-  .catch(err => {
-    console.error({ message: 'updateBookGenres Transaction Failed',
+  .catch(error => {
+    console.error({ message: 'UpdateBookGenres Outer Transaction failed',
                     arguments: arguments, });
-    throw err;
+    throw error;
   });
-};
+}
 
 const updateBookAuthors = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast) => {
   return db.tx(transaction => {
-    return transaction.oneOrNone(`
-      SELECT id FROM authors WHERE first_name = $1
-      AND last_name = $2 RETURNING id`, [newAuthorFirst, newAuthorLast])
+    return transaction.oneOrNone(`SELECT id FROM authors
+      WHERE LOWER(first_name) = LOWER($1)
+      AND LOWER(last_name) = LOWER($2)
+      `, [newAuthorFirst, newAuthorLast])
       .then(authorId => {
         if (!authorId) {
           return transaction.query(`
-            INSERT INTO authors(first_name, last_name) VALUES ($1, $2);
-            UPDATE authors_books SET author_id = (SELECT id FROM authors WHERE first_name = $1 AND last_name = $2)
-            WHERE authors_books.book_id = $3
-            AND authors_books.author_id = (SELECT id FROM authors WHERE first_name = $4 AND last_name = $5);
-            `, [newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast]
-          );
+              INSERT INTO authors (first_name, last_name) VALUES ($1, $2) RETURNING id
+               `, [newAuthorFirst, newAuthorLast])
+               .then(ids => {
+                return transaction.query(`
+                 UPDATE authors_books SET author_id = $1
+                 WHERE authors_books.book_id = $2
+                 AND authors_books.author_id = (SELECT id FROM genres WHERE first_name = $3
+                 AND last_name = $4);
+                 `, [ids[0].id, bookId, oldAuthorFirst, oldAuthorLast]);
+              })
+               .catch(console.error);
         } else {
-          transaction.query(`
-            UPDATE authors_books SET author_id = (SELECT id FROM authors WHERE first_name = $1 AND last_name = $2)
+          return transaction.query(`
+            UPDATE authors_books SET author_id = (SELECT id FROM authors
+            WHERE LOWER(first_name) = LOWER($1)
+            AND LOWER(last_name) = LOWER($2))
             WHERE authors_books.book_id = $3
-            AND authors_books.author_id = (SELECT id FROM authors WHERE first_name = $4 AND last_name = $5);
-            `, [newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast]);
+            AND authors_books.author_id = (SELECT id FROM genres WHERE first_name = $4
+            AND last_name = $5);
+            `, [newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast
+            ]);
         }
       })
-      .catch(err => {
-        console.error({ message: 'updateBookGenres Transaction Failed',
+      .catch(error => {
+        console.error({ message: 'UpdateBookGenres Inner Transaction failed',
                         arguments: arguments, });
-        throw err;
+        throw error;
       });
   })
-  .catch(err => {
-    console.error({ message: 'updateBookGenres Transaction Failed',
+  .catch(error => {
+    console.error({ message: 'UpdateBookGenres Outer Transaction failed',
                     arguments: arguments, });
-    throw err;
+    throw error;
   });
 };
 
-// const updateBooksTable
+const updateBooks = (bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publisher) => {
+  return db.query(`
+    UPDATE books SET title = $2, img_url = $3, price = $4,
+    in_stock = $5, isbn = $6, publisher = $7
+    WHERE id = $1
+    `, [bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publisher])
+    .catch(error => console.error(error));
+};
 
 module.exports = {
   getAllBooks,
@@ -116,4 +137,5 @@ module.exports = {
   searchForBooks,
   updateBookGenres,
   updateBookAuthors,
+  updateBooks,
 };
