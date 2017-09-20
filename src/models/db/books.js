@@ -104,8 +104,7 @@ const updateBookAuthors = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst
             WHERE authors_books.book_id = $3
             AND authors_books.author_id = (SELECT id FROM genres WHERE first_name = $4
             AND last_name = $5);
-            `, [newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast
-            ]);
+            `, [newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast]);
         }
       })
       .catch(error => {
