@@ -39,7 +39,7 @@ const searchForBooks = (searchQuery, offSet) => {
     .catch(error => console.error(error));
 };
 
-const updateBookGenres = (newGenreName, bookId, oldGenreName) => {
+const updateBookGenre = (newGenreName, bookId, oldGenreName) => {
   return db.tx(transaction => {
     return transaction.oneOrNone('SELECT id FROM genres WHERE LOWER(name) = LOWER($1)', [newGenreName])
       .then(genreId => {
@@ -76,7 +76,7 @@ const updateBookGenres = (newGenreName, bookId, oldGenreName) => {
   });
 }
 
-const updateBookAuthors = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast) => {
+const updateBookAuthor = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast) => {
   return db.tx(transaction => {
     return transaction.oneOrNone(`SELECT id FROM authors
       WHERE LOWER(first_name) = LOWER($1)
@@ -91,7 +91,7 @@ const updateBookAuthors = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst
                 return transaction.query(`
                  UPDATE authors_books SET author_id = $1
                  WHERE authors_books.book_id = $2
-                 AND authors_books.author_id = (SELECT id FROM genres WHERE first_name = $3
+                 AND authors_books.author_id = (SELECT id FROM authors WHERE first_name = $3
                  AND last_name = $4);
                  `, [ids[0].id, bookId, oldAuthorFirst, oldAuthorLast]);
               })
@@ -102,7 +102,7 @@ const updateBookAuthors = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst
             WHERE LOWER(first_name) = LOWER($1)
             AND LOWER(last_name) = LOWER($2))
             WHERE authors_books.book_id = $3
-            AND authors_books.author_id = (SELECT id FROM genres WHERE first_name = $4
+            AND authors_books.author_id = (SELECT id FROM authors WHERE first_name = $4
             AND last_name = $5);
             `, [newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast]);
         }
@@ -135,6 +135,6 @@ module.exports = {
   getAllBookImagesId,
   searchForBooks,
   updateBookGenres,
-  updateBookAuthors,
-  updateBooks,
+  updateBookAuthor,
+  updateBook,
 };
