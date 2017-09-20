@@ -29,15 +29,15 @@ CREATE TABLE authors (
 
 CREATE TABLE genres (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255)
+  name VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE authors_books (
-  author_id INTEGER REFERENCES authors (id),
-  book_id INTEGER REFERENCES books (id)
+  author_id INTEGER REFERENCES authors (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  book_id INTEGER REFERENCES books (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE genres_books (
-  genre_id INTEGER REFERENCES genres (id),
-  book_id INTEGER REFERENCES books (id)
+  genre_id INTEGER REFERENCES genres (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  book_id INTEGER REFERENCES books (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
