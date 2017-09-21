@@ -29,10 +29,20 @@ router.put('/books/:id/edit', (request, response) => {
   const inStock = request.body.inStock;
   const isbn = request.body.isbn;
   const publisher = request.body.publisher;
+  const oldFirstName = request.body.oldFirstName;
+  const oldLastName = request.body.oldLastName;
   const firstName = request.body.firstName;
   const lastName = request.body.lastName;
   const oldGenre = request.body.oldGenre;
   const bookId = request.params.id;
+  books.updateBook(bookId, title, imgUrl, price, inStock, isbn, publisher)
+  .then(() => books.updateBookAuthor(firstName, lastName, bookId, oldFirstName, oldLastName))
+  .catch(error => console.error(error));
+  let i = 0;
+  while (request.body['genre' + i]) {
+
+    i++;
+  }
 });
 
 router.get('/books/:id/edit', (request, response) => {
