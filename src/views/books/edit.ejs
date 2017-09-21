@@ -2,7 +2,7 @@
 
   <% if (book) {%>
       <img  id="edit-book-image" src=<%=book.img_url%>>
-      <form id="edit-book-form" method="put" action="/books/edit">
+      <form id="edit-book-form" method="put" action="/books/<%=book.id%>/edit">
         <div>
         Title: <input name="title" value="<%=book.title%>">
         </div>
@@ -22,7 +22,7 @@
         Publisher: <input name="publisher" value="<%=book.publisher%>">
       </div>
       <div>
-        <input class="edit" type="submit" value="Edit Book Info">
+        <!-- <input class="edit" type="submit" value="Edit Book Info"> -->
       </div>
       <!-- </form> -->
       <!-- <form id="edit-authors-form"> -->
@@ -36,7 +36,7 @@
         Last Name: <input name="lastName" value=<%=book.last_name%>>
       </div>
       <div>
-        <input class="edit" type="submit" value="Edit Author Info">
+        <!-- <input class="edit" type="submit" value="Edit Author Info"> -->
       </div>
       <!-- </form> -->
         <% const genres = book.genres.split(', ') %>
@@ -53,7 +53,7 @@
         </div>
         <% }) %>
         <div>
-        <input class="edit" type="submit" value="Edit Genres">
+        <input class="edit" type="submit" value="Edit">
       </div>
       </form>
   <% } %>
