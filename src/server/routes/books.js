@@ -22,6 +22,19 @@ router.get('/books/search', (request, response) => {
     .catch(err => console.log(err));
 });
 
+router.put('/books/:id/edit', (request, response) => {
+  const title = request.body.title;
+  const imgUrl = request.body.imgUrl;
+  const price = request.body.price;
+  const inStock = request.body.inStock;
+  const isbn = request.body.isbn;
+  const publisher = request.body.publisher;
+  const firstName = request.body.firstName;
+  const lastName = request.body.lastName;
+  const oldGenre = request.body.oldGenre;
+  const bookId = request.params.id;
+});
+
 router.get('/books/:id/edit', (request, response) => {
   const id = request.params.id;
   books.getOneBook(id)
