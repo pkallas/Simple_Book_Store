@@ -2,26 +2,59 @@
 
   <% if (book) {%>
       <img  id="edit-book-image" src=<%=book.img_url%>>
-      <form id="edit-book-form">
-        <input name="title" value=<%=book.title%>>
-        <input name="imgUrl" value=<%=book.img_url%>>
-        <input name="price" value=<%=book.price%>>
-        <input name="inStock" value=<%=book.in_stock%>>
-        <input name="isbn" value=<%=book.isbn%>>
-        <input name="publisher" value=<%=book.publisher%>>
-        <input class="edit" type="submit" value="Edit">
-      </form>
-      <form id="edit-authors-form">
-        <input name="firstName" value=<%=book.first_name%>>
-        <input name="lastName" value=<%=book.last_name%>>
-        <input class="edit" type="submit" value="Edit">
-      </form>
+      <form id="edit-book-form" method="put" action="/books/edit">
+        <div>
+        Title: <input name="title" value="<%=book.title%>">
+        </div>
+        <div>
+        Image Link: <input name="imgUrl" value=<%=book.img_url%>>
+        </div>
+        <div>
+        Price: <input name="price" value=<%=book.price%>>
+        </div>
+        <div>
+        Number in Stock: <input name="inStock" value=<%=book.in_stock%>>
+      </div>
+      <div>
+        ISBN: <input name="isbn" value=<%=book.isbn%>>
+      </div>
+      <div>
+        Publisher: <input name="publisher" value="<%=book.publisher%>">
+      </div>
+      <div>
+        <input class="edit" type="submit" value="Edit Book Info">
+      </div>
+      <!-- </form> -->
+      <!-- <form id="edit-authors-form"> -->
+        <div>
+        Author
+      </div>
+      <div>
+        First Name: <input name="firstName" value=<%=book.first_name%>>
+      </div>
+      <div>
+        Last Name: <input name="lastName" value=<%=book.last_name%>>
+      </div>
+      <div>
+        <input class="edit" type="submit" value="Edit Author Info">
+      </div>
+      <!-- </form> -->
         <% const genres = book.genres.split(', ') %>
-        <form id="edit-genres-form">
+        <!-- <form id="edit-genres-form"> -->
+          Genres
         <% genres.forEach(function (genre, index) {%>
-          <input name="genre<%= index %>" value=<%=genre%>>
-          <input class="edit" type="submit" value="Edit">
+          <div>
+          <option value=<%=genre.name%>><%=genre.name%></option>
+          <select name="genre<%= index %>" value=<%=genre%>>
+            <% allGenres.forEach(function (genre) {%>
+              <option value=<%=genre.name%>><%=genre.name%></option>
+            <% }) %>
+          </select>
+        </div>
         <% }) %>
+        <div>
+        <input class="edit" type="submit" value="Edit Genres">
+      </div>
       </form>
   <% } %>
 
