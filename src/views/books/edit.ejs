@@ -1,0 +1,28 @@
+<% include ../partials/header.ejs %>
+
+  <% if (book) {%>
+      <img  id="edit-book-image" src=<%=book.img_url%>>
+      <form id="edit-book-form">
+        <input name="title" value=<%=book.title%>>
+        <input name="imgUrl" value=<%=book.img_url%>>
+        <input name="price" value=<%=book.price%>>
+        <input name="inStock" value=<%=book.in_stock%>>
+        <input name="isbn" value=<%=book.isbn%>>
+        <input name="publisher" value=<%=book.publisher%>>
+        <input class="edit" type="submit" value="Edit">
+      </form>
+      <form id="edit-authors-form">
+        <input name="firstName" value=<%=book.first_name%>>
+        <input name="lastName" value=<%=book.last_name%>>
+        <input class="edit" type="submit" value="Edit">
+      </form>
+        <% const genres = book.genres.split(', ') %>
+        <form id="edit-genres-form">
+        <% genres.forEach(function (genre, index) {%>
+          <input name="genre<%= index %>" value=<%=genre%>>
+          <input class="edit" type="submit" value="Edit">
+        <% }) %>
+      </form>
+  <% } %>
+
+<% include ../partials/footer.ejs %>

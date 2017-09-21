@@ -120,7 +120,7 @@ const updateBookAuthor = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst,
   });
 };
 
-const updateBooks = (bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publisher) => {
+const updateBook = (bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publisher) => {
   return db.query(`
     UPDATE books SET title = $2, img_url = $3, price = $4,
     in_stock = $5, isbn = $6, publisher = $7
@@ -134,7 +134,7 @@ module.exports = {
   getOneBook,
   getAllBookImagesId,
   searchForBooks,
-  updateBookGenres,
+  updateBookGenre,
   updateBookAuthor,
   updateBook,
 };

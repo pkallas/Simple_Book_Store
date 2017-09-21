@@ -22,6 +22,13 @@ router.get('/books/search', (request, response) => {
     .catch(err => console.log(err));
 });
 
+router.get('/books/:id/edit', (request, response) => {
+  const id = request.params.id;
+  books.getOneBook(id)
+  .then(book => response.render('books/edit', { book }))
+  .catch(error => console.error(error));
+});
+
 router.get('/books/:id', (request, response) => {
   const id = request.params.id;
   books.getOneBook(id)
