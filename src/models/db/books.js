@@ -141,7 +141,7 @@ const deleteBook = (bookId) => {
 
 const createBook = (title, price, image, inStock, isbn, publisher) => {
   return db.query(`INSERT INTO books (title, price, img_url, in_stock, isbn, publisher)
-  VALUES ($1, $2, $3, $4, $5, $6)
+  VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
   `, [title, price, image, inStock, isbn, publisher])
   .catch(error => console.error(error));
 };
