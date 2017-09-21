@@ -25,7 +25,9 @@ router.get('/books/search', (request, response) => {
 router.get('/books/:id/edit', (request, response) => {
   const id = request.params.id;
   books.getOneBook(id)
-  .then(book => response.render('books/edit', { book }))
+  .then(book => {
+    books.getAllGenres().then(allGenres => response.render('books/edit', { book, allGenres }));
+  })
   .catch(error => console.error(error));
 });
 
