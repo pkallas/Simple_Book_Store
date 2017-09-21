@@ -129,6 +129,11 @@ const updateBook = (bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publis
     .catch(error => console.error(error));
 };
 
+const getAllGenres = () => {
+  return db.query(`SELECT name FROM genres`)
+    .catch(error => console.error(error));
+};
+
 module.exports = {
   getAllBooks,
   getOneBook,
@@ -137,4 +142,5 @@ module.exports = {
   updateBookGenre,
   updateBookAuthor,
   updateBook,
+  getAllGenres,
 };
