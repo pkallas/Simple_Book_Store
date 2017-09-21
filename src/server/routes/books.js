@@ -64,7 +64,7 @@ router.get('/books/:id', (request, response) => {
 router.delete('/books/:id/delete', (request, response) => {
   const id = request.params.id;
   books.deleteBook(id)
-  .then((response) => response.redirect('/'))
+  .then(() => response.redirect('/'))
   .catch(error => console.error(error));
 });
 

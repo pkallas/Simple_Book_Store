@@ -12,6 +12,8 @@ app.listen(port, ()=> {
   console.log(`http://localhost:${port}`);
 });
 
+app.use(express.static('public'));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(middleware);
