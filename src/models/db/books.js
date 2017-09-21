@@ -11,14 +11,14 @@ const getAllBookImagesId = () => {
 };
 
 const getOneBook = bookID => {
-  return db.query(`SELECT title, price, img_url, in_stock, isbn, publisher, first_name, last_name,
+  return db.query(`SELECT books.id, title, price, img_url, in_stock, isbn, publisher, first_name, last_name,
   string_agg(genres.name, ', ') AS genres FROM books
   JOIN authors_books ON books.id = authors_books.book_id
   JOIN authors ON authors.id = authors_books.author_id
   JOIN genres_books ON books.id = genres_books.book_id
   JOIN genres ON genres.id = genres_books.genre_id
   WHERE books.id = $1
-  GROUP BY title, price, img_url, in_stock, isbn, publisher, first_name, last_name`,
+  GROUP BY books.id, title, price, img_url, in_stock, isbn, publisher, first_name, last_name`,
   [bookID])
   .then(book => book[0])
   .catch(error => console.error(error));
