@@ -2,12 +2,12 @@ const db = require('./db');
 
 const getAllBooks = () => {
   return db.query(`SELECT * FROM books`)
-    .catch(error => console.error(error));
+  .catch(error => console.error(error));
 };
 
 const getAllBookImagesId = () => {
   return db.query(`SELECT id, img_url FROM books`)
-    .catch(error => console.error(error));
+  .catch(error => console.error(error));
 };
 
 const getOneBook = bookID => {
@@ -131,11 +131,18 @@ const updateBook = (bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publis
 
 const getAllGenres = () => {
   return db.query(`SELECT name FROM genres`)
-    .catch(error => console.error(error));
+  .catch(error => console.error(error));
 };
 
 const deleteBook = (bookId) => {
   return db.query(`DELETE FROM books WHERE id = $1`, [bookId])
+  .catch(error => console.error(error));
+};
+
+const createBook = (title, price, image, inStock, isbn, publisher) => {
+  return db.query(`INSERT INTO books (title, price, img_url, in_stock, isbn, publisher)
+  VALUES ($1, $2, $3, $4, $5, $6)
+  `, [title, price, image, inStock, isbn, publisher])
   .catch(error => console.error(error));
 };
 
@@ -149,4 +156,5 @@ module.exports = {
   updateBook,
   getAllGenres,
   deleteBook,
+  createBook,
 };
