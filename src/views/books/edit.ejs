@@ -44,13 +44,13 @@
           Genres
         <% genres.forEach(function (genre, index) {%>
           <div>
-          <option value=<%=genre.name%>><%=genre.name%></option>
-          <select name="genre<%= index %>" value=<%=genre%>>
-            <% allGenres.forEach(function (genre) {%>
-              <option value=<%=genre.name%>><%=genre.name%></option>
-            <% }) %>
-          </select>
-        </div>
+            <input list="genre<%= index %>" value="<%=genre%>">
+            <datalist id="genre<%= index %>">
+              <% allGenres.forEach(function (genre, index) { %>
+                  <option value="<%=genre.name%>">
+              <% }) %>
+            </datalist>
+          </div>
         <% }) %>
         <div>
         <input class="edit" type="submit" value="Edit">
