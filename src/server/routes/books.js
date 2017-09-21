@@ -61,6 +61,10 @@ router.get('/books/:id', (request, response) => {
   .catch(error => console.error(error));
 });
 
+router.get('/books/create', (request, response) => {
+  response.render('books/create');
+});
+
 router.delete('/books/:id/delete', (request, response) => {
   const id = request.params.id;
   books.deleteBook(id)
