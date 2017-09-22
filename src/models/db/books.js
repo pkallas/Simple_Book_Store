@@ -39,48 +39,6 @@ const searchForBooks = (searchQuery, offSet) => {
     .catch(error => console.error(error));
 };
 
-const updateBookAuthor = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast) => {
-  return db.tx(transaction => {
-    return transaction.oneOrNone(`SELECT id FROM authors
-      WHERE LOWER(first_name) = LOWER($1)
-      AND LOWER(last_name) = LOWER($2)
-      `, [newAuthorFirst, newAuthorLast])
-      .then(authorId => {
-        if (!authorId) {
-          return transaction.query(`
-              INSERT INTO authors (first_name, last_name) VALUES ($1, $2) RETURNING id
-               `, [newAuthorFirst, newAuthorLast])
-               .then(ids => {
-                return transaction.query(`
-                 UPDATE authors_books SET author_id = $1
-                 WHERE authors_books.book_id = $2
-                 AND authors_books.author_id = (SELECT id FROM authors WHERE first_name = $3
-                 AND last_name = $4);
-                 `, [ids[0].id, bookId, oldAuthorFirst, oldAuthorLast]);
-              })
-               .catch(console.error);
-        } else {
-          return transaction.query(`
-            UPDATE authors_books SET author_id = (SELECT id FROM authors
-            WHERE LOWER(first_name) = LOWER($1)
-            AND LOWER(last_name) = LOWER($2))
-            WHERE authors_books.book_id = $3
-            AND authors_books.author_id = (SELECT id FROM authors WHERE first_name = $4
-            AND last_name = $5);
-            `, [newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast]);
-        }
-      })
-      .catch(error => {
-        console.error({ message: 'UpdateBookGenres Inner Transaction failed', });
-        throw error;
-      });
-  })
-  .catch(error => {
-    console.error({ message: 'UpdateBookGenres Outer Transaction failed', });
-    throw error;
-  });
-};
-
 const updateBook = (bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publisher) => {
   return db.query(`
     UPDATE books SET title = $2, img_url = $3, price = $4,
@@ -107,21 +65,65 @@ const createBook = (title, price, image, inStock, isbn, publisher) => {
   .catch(error => console.error(error));
 };
 
-const addAuthors = (bookId, firstName, lastName) => {
+const addOrEditAuthors = (bookId, authors) => {
   return db.tx(transaction => {
-    return transaction.query(`INSERT INTO authors (first_name, last_name)
-    VALUES ($1, $2) RETURNING id`, [firstName, lastName])
-    .then(authorId => {
-      return transaction.query(`INSERT INTO authors_books (author_id, book_id)
-      VALUES ($1, $2) RETURNING book_id`, [authorId, bookId])
-      .catch(error => console.error(error));
+    const queries = [];
+    queries.push(
+      transaction.any(`SELECT * FROM authors_books WHERE book_id = $1
+        `, [bookId])
+        .then(authorConnections => {
+          if (authorConnections) {
+            return transaction.query(`DELETE FROM authors_books
+              WHERE book_id = $1`, [bookId]);
+          }
+        })
+        .catch(error => {
+          console.error({ message: 'addorEditAuthors Delete failed'});
+          throw error
+        })
+    );
+    authors.forEach(author => {
+      queries.push(
+        transaction.oneOrNone(`SELECT id FROM authors
+          WHERE LOWER(first_name) = LOWER($1)
+          AND LOWER(last_name) = LOWER($2)
+          `, [author.firstName, author.lastName])
+          .then(authorId => {
+            if (!authorId) {
+              return transaction.query(`INSERT INTO authors (first_name, last_name)
+              VALUES ($1, $2) RETURNING id`, [author.firstName, author.lastName])
+              .then(newAuthor => {
+                return transaction.query(`INSERT INTO authors_books (author_id, book_id)
+                VALUES ($1, $2)`, [newAuthor, bookId])
+                .catch(error => {
+                  console.error({ message: 'addorEditAuthors Create New AuthorId and BookId failed'});
+                  throw error;
+                })
+              })
+              .catch(error => {
+                console.error({ message: 'addorEditAuthors Create New AuthorId failed'});
+                throw error;
+              })
+            } else {
+              return transaction.query(`INSERT INTO authors_books (author_id, book_id)
+              VALUES ($1, $2)`, [authorId, bookId])
+              .catch(error => {
+                console.error({ message: 'addorEditAuthors Create from existing author failed'});
+                throw error;
+              })
+            }
+          })
+          .catch(error => {
+            console.error({ message: 'addorEditAuthors Create New Author failed'});
+            throw error;
+          })
+      )
     })
-    .catch(error => console.error(error));
-  })
-  .catch(error => {
-    console.error({ message: 'addAuthors Outer Transaction failed', });
-    throw error;
-  });
+    return transaction.batch(queries)
+    .catch(error => {
+      console.error({ message: 'addorEditAuthors batch failed'});
+      throw error;
+    })
 };
 
 const addOrEditGenres = (bookId, genres) => {
@@ -146,7 +148,7 @@ const addOrEditGenres = (bookId, genres) => {
       `, [genre])
       .then(genreId => {
         if (!genreId) {
-          transaction.query(`INSERT into genres (name) VALUES $1 RETURNING id`, [genre])
+          return transaction.query(`INSERT into genres (name) VALUES $1 RETURNING id`, [genre])
           .then(newGenre => {
             return transaction.query(`INSERT into genres_books (genre_id, book_id)
             VALUES ($1, $2)`, [newGenre[0].id, bookId])
@@ -191,11 +193,10 @@ module.exports = {
   getOneBook,
   getAllBookImagesId,
   searchForBooks,
-  updateBookAuthor,
   updateBook,
   getAllGenres,
   deleteBook,
   createBook,
-  addAuthors,
-  addorEditGenres,
+  addOrEditAuthors,
+  addOrEditGenres,
 };
