@@ -52,6 +52,10 @@ router.put('/books/:id/edit', (request, response) => {
   .catch(error => console.error(error));
 });
 
+router.get('/books/create', (request, response) => {
+  response.render('books/create');
+});
+
 router.get('/books/:id/edit', (request, response) => {
   const id = request.params.id;
   books.getOneBook(id)
@@ -66,10 +70,6 @@ router.get('/books/:id', (request, response) => {
   books.getOneBook(id)
   .then(book => response.render('books/book', { book }))
   .catch(error => console.error(error));
-});
-
-router.get('/books/create', (request, response) => {
-  response.render('books/create');
 });
 
 router.delete('/books/:id/delete', (request, response) => {

@@ -1,34 +1,32 @@
 <%- include ../partials/header.ejs %>
 
- <% if (!book) {%>
    <h1>Create Book</h1>
    <form method="post" action="/books/create">
+    <div>
      Title: <input name="title">
+    </div>
+    <div>
      Price: <input name="price">
+   </div>
+   <div>
      Image Link: <input name="image">
+   </div>
+   <div>
      Number in Stock: <input name="inStock">
+   </div>
+   <div>
      ISBN: <input name="isbn">
+   </div>
+   <div>
      Publisher: <input name="publisher">
-     <input type="submit" value="Create Book">
-   </form>
- <% } %>
- <% if (book) {%>
-   <h1>Author</h1>
-   <form method="post" action="/books/create">
-     Book ID: <input name="bookId" value=<%=book.id%> readonly>
-     First Name: <input name="firstName">
-     Last Name: <input name="lastName">
-     <input type="submit" value="Add Author">
-   </form>
- <% } %>
- <% if (book && author) {%>
+   </div>
+   <h1>Authors</h1>
+     <button class="add-author-input">Add Author</button>
    <h1>Genres</h1>
-   <form id="add-genres-for-new-book" method="post" action="/books/create">
-     Book ID: <input name="bookId" value=<%=book.id%> readonly>
-     Genre: <input name="genre0">
-     <input type="submit" value="Add Genre(s)">
+     <button id="add-another-genre">Add Genre</button>
+    <div>
+      <input type="submit" value="Create Book">
+    </div>
    </form>
-   <button id="add-another-genre">Add another genre</button>
- <% } %>
 
 <% include ../partials/footer.ejs %>
