@@ -2,7 +2,7 @@
 
   <% if (book) {%>
       <img  id="edit-book-image" src=<%=book.img_url%>>
-      <form id="edit-book-form" method="put" action="/books/<%=book.id%>/edit">
+      <form id="edit-book-form" method="POST" action="/books/<%=book.id%>/edit/?_method=PUT">
         <div>
         Title: <input name="title" value="<%=book.title%>">
         </div>
@@ -21,37 +21,28 @@
       <div>
         Publisher: <input name="publisher" value="<%=book.publisher%>">
       </div>
-      <div>
-        <!-- <input class="edit" type="submit" value="Edit Book Info"> -->
-      </div>
-      <!-- </form> -->
-      <!-- <form id="edit-authors-form"> -->
         <div>
         Author
       </div>
-      <div>
-        First Name: <input name="firstName" value=<%=book.first_name%>>
-      </div>
-      <div>
-        Last Name: <input name="lastName" value=<%=book.last_name%>>
-      </div>
-      <div>
-        <!-- <input class="edit" type="submit" value="Edit Author Info"> -->
-      </div>
-      <!-- </form> -->
-        <% const genres = book.genres.split(', ') %>
-        <!-- <form id="edit-genres-form"> -->
+      <% book.first_names.forEach(function (firstName, index) {%>
+        <div>
+          First Name: <input name="firstName<%=index%>" value=<%=firstName%>>
+          Last Name: <input name="lastName<%=index%>" value=<%=book.last_names[index]%>>
+          <button class="remove-author-input">X</button>
+        </div>
+      <% }) %>
           Genres
-        <% genres.forEach(function (genre, index) {%>
+        <% book.genres.forEach(function (genre, index) {%>
           <div>
-            <input list="genre<%= index %>" value="<%=genre%>">
-            <datalist id="genre<%= index %>">
-              <% allGenres.forEach(function (genre, index) { %>
-                  <option value="<%=genre.name%>">
-              <% }) %>
-            </datalist>
+            <input list="genres" name="genre<%=index%>" value="<%=genre%>"><button class="close-genre-input">X</button>
           </div>
         <% }) %>
+        <datalist id="genres">
+          <% allGenres.forEach(function (genre) { %>
+            <option value="<%=genre.name%>">
+              <% }) %>
+        </datalist>
+        <button id="add-genre-input">Add Another Genre</button>
         <div>
         <input class="edit" type="submit" value="Edit">
       </div>
