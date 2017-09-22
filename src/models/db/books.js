@@ -11,14 +11,17 @@ const getAllBookImagesId = () => {
 };
 
 const getOneBook = bookID => {
-  return db.query(`SELECT books.id, title, price, img_url, in_stock, isbn, publisher, first_name, last_name,
-  string_agg(genres.name, ', ') AS genres FROM books
+  return db.query(`SELECT books.id, title, price, img_url, in_stock, isbn, publisher,
+  array_agg(DISTINCT first_name) AS first_names,
+  array_agg(DISTINCT last_name) AS last_names,
+  array_agg(DISTINCT genres.name) AS genres FROM books
   JOIN authors_books ON books.id = authors_books.book_id
   JOIN authors ON authors.id = authors_books.author_id
   JOIN genres_books ON books.id = genres_books.book_id
   JOIN genres ON genres.id = genres_books.genre_id
   WHERE books.id = $1
-  GROUP BY books.id, title, price, img_url, in_stock, isbn, publisher, first_name, last_name`,
+  GROUP BY books.id, title, price, img_url, in_stock, isbn, publisher
+  ORDER BY books.id`,
   [bookID])
   .then(book => book[0])
   .catch(error => console.error(error));
@@ -78,8 +81,8 @@ const addOrEditAuthors = (bookId, authors) => {
           }
         })
         .catch(error => {
-          console.error({ message: 'addorEditAuthors Delete failed'});
-          throw error
+          console.error({ message: 'addorEditAuthors Delete failed' });
+          throw error;
         })
     );
     authors.forEach(author => {
@@ -94,36 +97,37 @@ const addOrEditAuthors = (bookId, authors) => {
               VALUES ($1, $2) RETURNING id`, [author.firstName, author.lastName])
               .then(newAuthor => {
                 return transaction.query(`INSERT INTO authors_books (author_id, book_id)
-                VALUES ($1, $2)`, [newAuthor, bookId])
+                VALUES ($1, $2)`, [newAuthor.id, bookId])
                 .catch(error => {
                   console.error({ message: 'addorEditAuthors Create New AuthorId and BookId failed'});
                   throw error;
-                })
+                });
               })
               .catch(error => {
                 console.error({ message: 'addorEditAuthors Create New AuthorId failed'});
                 throw error;
-              })
+              });
             } else {
               return transaction.query(`INSERT INTO authors_books (author_id, book_id)
-              VALUES ($1, $2)`, [authorId, bookId])
+              VALUES ($1, $2)`, [authorId.id, bookId])
               .catch(error => {
                 console.error({ message: 'addorEditAuthors Create from existing author failed'});
                 throw error;
-              })
+              });
             }
           })
           .catch(error => {
             console.error({ message: 'addorEditAuthors Create New Author failed'});
             throw error;
           })
-      )
-    })
+      );
+    });
     return transaction.batch(queries)
     .catch(error => {
       console.error({ message: 'addorEditAuthors batch failed'});
       throw error;
-    })
+    });
+  });
 };
 
 const addOrEditGenres = (bookId, genres) => {
@@ -151,7 +155,7 @@ const addOrEditGenres = (bookId, genres) => {
           return transaction.query(`INSERT into genres (name) VALUES $1 RETURNING id`, [genre])
           .then(newGenre => {
             return transaction.query(`INSERT into genres_books (genre_id, book_id)
-            VALUES ($1, $2)`, [newGenre[0].id, bookId])
+            VALUES ($1, $2)`, [newGenre.id, bookId])
             .catch(error => {
                 console.error({ message: 'addGenres Inner Transaction 1 failed', });
                 throw error;
