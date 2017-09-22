@@ -39,41 +39,6 @@ const searchForBooks = (searchQuery, offSet) => {
     .catch(error => console.error(error));
 };
 
-const updateBookGenre = (newGenreName, bookId, oldGenreName) => {
-  return db.tx(transaction => {
-    return transaction.oneOrNone('SELECT id FROM genres WHERE LOWER(name) = LOWER($1)', [newGenreName])
-      .then(genreId => {
-        if (!genreId) {
-          return transaction.query(`
-              INSERT INTO genres (name) VALUES ($1) RETURNING id
-               `, [newGenreName])
-               .then(ids => {
-                return transaction.query(`
-                 UPDATE genres_books SET genre_id = $1
-                 WHERE genres_books.book_id = $2
-                 AND genres_books.genre_id = (SELECT id FROM genres WHERE name = $3);
-                 `, [ids[0].id, bookId, oldGenreName]);
-              })
-               .catch(console.error);
-        } else {
-          return transaction.query(`
-            UPDATE genres_books SET genre_id = (SELECT id FROM genres WHERE LOWER(name) = LOWER($1))
-	          WHERE genres_books.book_id = $2
-	          AND genres_books.genre_id = (SELECT id FROM genres WHERE name = $3);
-            `, [newGenreName, bookId, oldGenreName]);
-        }
-      })
-      .catch(error => {
-        console.error({ message: 'UpdateBookGenres Inner Transaction failed', });
-        throw error;
-      });
-  })
-  .catch(error => {
-    console.error({ message: 'UpdateBookGenres Outer Transaction failed', });
-    throw error;
-  });
-}
-
 const updateBookAuthor = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst, oldAuthorLast) => {
   return db.tx(transaction => {
     return transaction.oneOrNone(`SELECT id FROM authors
@@ -159,9 +124,23 @@ const addAuthors = (bookId, firstName, lastName) => {
   });
 };
 
-const addGenres = (bookId, genres) => {
+const addOrEditGenres = (bookId, genres) => {
   return db.tx(transaction => {
     const queries = [];
+    queries.push(
+      transaction.any(`SELECT * FROM genres_books WHERE book_id = $1`,
+      [bookId])
+      .then(genreConnections => {
+        if (genreConnections) {
+          return transaction.query(`DELETE FROM genres_books
+            WHERE book_id = $1`, [bookId]);
+        }
+      })
+      .catch(error => {
+          console.error({ message: 'addGenres Delete failed', });
+          throw error;
+        })
+    );
     genres.forEach(genre => {
       queries.push(transaction.oneOrNone(`'SELECT id FROM genres WHERE LOWER(name) = LOWER($1)',
       `, [genre])
@@ -212,12 +191,11 @@ module.exports = {
   getOneBook,
   getAllBookImagesId,
   searchForBooks,
-  updateBookGenre,
   updateBookAuthor,
   updateBook,
   getAllGenres,
   deleteBook,
   createBook,
   addAuthors,
-  addGenres,
+  addorEditGenres,
 };
