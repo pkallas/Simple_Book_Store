@@ -75,32 +75,36 @@ const addOrEditAuthors = (bookId, authors) => {
       transaction.any(`SELECT * FROM authors_books WHERE book_id = $1`, [bookId])
         .then(authorConnections => {
           if (authorConnections.length > 0) {
-            return transaction.query(`DELETE FROM authors_books WHERE book_id = $1`, [bookId])
+            return transaction.query(`DELETE FROM authors_books WHERE book_id = $1`, [bookId]);
           }
         })
         .catch(error => console.error(error))
     );
     authors.forEach(author => {
       queries.push(
-        transaction.oneOrNone(`SELECT id FROM authors WHERE LOWER(first_name) = LOWER($1) AND LOWER(last_name) = LOWER($2)`, [author.firstName, author.lastName])
+        transaction.oneOrNone(`SELECT id FROM authors WHERE LOWER(first_name) = LOWER($1)
+        AND LOWER(last_name) = LOWER($2)`, [author.firstName, author.lastName])
           .then(authorId => {
             if (!authorId) {
-              return transaction.query(`INSERT INTO authors(first_name, last_name) VALUES($1, $2) RETURNING id`, [author.firstName, author.lastName])
+              return transaction.query(`INSERT INTO authors(first_name, last_name)
+              VALUES($1, $2) RETURNING id`, [author.firstName, author.lastName])
                 .then(newAuthor => {
-                  return transaction.query(`INSERT INTO authors_books(author_id, book_id) VALUES($1, $2)`, [newAuthor[0].id, bookId])
-                    .catch(error => console.error(error))
+                  return transaction.query(`INSERT INTO authors_books(author_id, book_id)
+                  VALUES($1, $2)`, [newAuthor[0].id, bookId])
+                    .catch(error => console.error(error));
                 })
-                .catch(error => console.error(error))
+                .catch(error => console.error(error));
             } else {
-              return transaction.query(`INSERT INTO authors_books(author_id, book_id) VALUES($1, $2)`, [authorId.id, bookId])
-                .catch(error => console.error(error))
+              return transaction.query(`INSERT INTO authors_books(author_id, book_id)
+              VALUES($1, $2)`, [authorId.id, bookId])
+                .catch(error => console.error(error));
             }
           })
           .catch(error => console.error(error))
       );
     });
     return transaction.batch(queries)
-    .then(data => console.log('Transaction Finished'));
+    .then(data => console.log('addOrEditAuthors Transaction complete'));
   });
 };
 
