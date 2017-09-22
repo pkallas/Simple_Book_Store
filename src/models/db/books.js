@@ -146,6 +146,65 @@ const createBook = (title, price, image, inStock, isbn, publisher) => {
   .catch(error => console.error(error));
 };
 
+const addAuthors = (bookId, firstName, lastName) => {
+  return db.tx(transaction => {
+    return transaction.query(`INSERT INTO authors (first_name, last_name)
+    VALUES ($1, $2) RETURNING id`, [firstName, lastName])
+    .then(authorId => {
+      return transaction.query(`INSERT INTO authors_books (author_id, book_id)
+      VALUES ($1, $2) RETURNING book_id`, [authorId, bookId])
+      .catch(error => console.error(error));
+    })
+    .catch(error => console.error(error));
+  })
+  .catch(error => {
+    console.error({ message: 'addAuthors Outer Transaction failed', });
+    throw error;
+  });
+};
+
+const addGenres = (bookId, genres) => {
+  return db.tx(transaction => {
+    const queries = [];
+    genres.forEach(genre => {
+      queries.push(transaction.oneOrNone(`'SELECT id FROM genres WHERE LOWER(name) = LOWER($1)',
+      `, [genre])
+      .then(genreId => {
+        if (!genreId) {
+          transaction.query(`INSERT into genres (name) VALUES $1 RETURNING id`, [genre])
+          .then(newGenre => {
+            return transaction.query(`INSERT into genres_books (genre_id, book_id)
+            VALUES ($1, $2)`, [newGenre[0].id, bookId])
+            .catch(error => {
+                console.error({ message: 'addGenres Inner Transaction 1 failed', });
+                throw error;
+              });
+          })
+          .catch(error => {
+              console.error({ message: 'addGenres Inner Transaction 2 failed', });
+              throw error;
+            });
+        } else {
+          return transaction.query(`INSERT into genres_books (genre_id, book_id)
+          VALUES ($1, $2)`, [genreId.id, bookId])
+          .catch();
+        }
+      })
+      .catch()
+    );
+    });
+    transaction.batch(queries)
+    .catch(error => {
+        console.error({ message: 'addGenres Batch Transaction failed', });
+        throw error;
+      });
+  })
+  .catch(error => {
+      console.error({ message: 'addGenres OuterMost Transaction failed', });
+      throw error;
+    });
+};
+
 module.exports = {
   getAllBooks,
   getOneBook,
@@ -157,4 +216,6 @@ module.exports = {
   getAllGenres,
   deleteBook,
   createBook,
+  addAuthors,
+  addGenres,
 };
