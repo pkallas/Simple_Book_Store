@@ -187,10 +187,16 @@ const addGenres = (bookId, genres) => {
         } else {
           return transaction.query(`INSERT into genres_books (genre_id, book_id)
           VALUES ($1, $2)`, [genreId.id, bookId])
-          .catch();
+          .catch(error => {
+              console.error({ message: 'addGenres Inner Transaction 3 failed', });
+              throw error;
+            });
         }
       })
-      .catch()
+      .catch(error => {
+        console.error({ messsage: 'addGenres push Transaction failed', });
+        throw error;
+      })
     );
     });
     transaction.batch(queries)
