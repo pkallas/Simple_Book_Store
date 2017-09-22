@@ -35,15 +35,15 @@ router.put('/books/:id/edit', (request, response) => {
   let i = 0;
   while (request.body['firstName' + i]) {
     let author = {};
-    author.firstName = request.body['firstName' + i]
-    author.lastName = request.body['lastName' + i]
-    authors.push(author)
-    i++
+    author.firstName = request.body['firstName' + i];
+    author.lastName = request.body['lastName' + i];
+    authors.push(author);
+    i++;
   };
   let j = 0;
   while (request.body['genre' + j]) {
     genres.push(request.body['genre' + j]);
-    j++
+    j++;
   };
   books.updateBook(bookId, title, imgUrl, price, inStock, isbn, publisher)
   .then(() => books.addOrEditAuthors(bookId, authors))
