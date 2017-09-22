@@ -64,14 +64,12 @@ const updateBookGenre = (newGenreName, bookId, oldGenreName) => {
         }
       })
       .catch(error => {
-        console.error({ message: 'UpdateBookGenres Inner Transaction failed',
-                        arguments: arguments, });
+        console.error({ message: 'UpdateBookGenres Inner Transaction failed', });
         throw error;
       });
   })
   .catch(error => {
-    console.error({ message: 'UpdateBookGenres Outer Transaction failed',
-                    arguments: arguments, });
+    console.error({ message: 'UpdateBookGenres Outer Transaction failed', });
     throw error;
   });
 }
@@ -108,14 +106,12 @@ const updateBookAuthor = (newAuthorFirst, newAuthorLast, bookId, oldAuthorFirst,
         }
       })
       .catch(error => {
-        console.error({ message: 'UpdateBookGenres Inner Transaction failed',
-                        arguments: arguments, });
+        console.error({ message: 'UpdateBookGenres Inner Transaction failed', });
         throw error;
       });
   })
   .catch(error => {
-    console.error({ message: 'UpdateBookGenres Outer Transaction failed',
-                    arguments: arguments, });
+    console.error({ message: 'UpdateBookGenres Outer Transaction failed', });
     throw error;
   });
 };
