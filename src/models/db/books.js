@@ -42,12 +42,12 @@ const searchForBooks = (searchQuery, offSet) => {
     .catch(error => console.error(error));
 };
 
-const updateBook = (bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publisher) => {
+const updateBook = (book) => {
   return db.query(`
     UPDATE books SET title = $2, img_url = $3, price = $4,
     in_stock = $5, isbn = $6, publisher = $7
     WHERE id = $1
-    `, [bookId, bookTitle, bookImg, bookPrice, inStock, isbn, publisher])
+    `, [book.id, book.title, book.image, book.price, book.inStock, book.isbn, book.publisher])
     .catch(error => console.error(error));
 };
 
@@ -61,10 +61,10 @@ const deleteBook = (bookId) => {
   .catch(error => console.error(error));
 };
 
-const createBook = (title, price, image, inStock, isbn, publisher) => {
+const createBook = (book) => {
   return db.query(`INSERT INTO books (title, price, img_url, in_stock, isbn, publisher)
   VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
-  `, [title, price, image, inStock, isbn, publisher])
+  `, [book.title, book.price, book.image, book.inStock, book.isbn, book.publisher])
   .catch(error => console.error(error));
 };
 

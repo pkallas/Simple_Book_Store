@@ -19,17 +19,19 @@ router.get('/books/search', (request, response) => {
     .then(books => {
       response.render('books/search', { books, offset, searchTerm: request.query.search });
     })
-    .catch(err => console.log(err));
+    .catch(error => console.log(error));
 });
 
 router.put('/books/:id/edit', (request, response) => {
-  const title = request.body.title;
-  const imgUrl = request.body.imgUrl;
-  const price = request.body.price;
-  const inStock = request.body.inStock;
-  const isbn = request.body.isbn;
-  const publisher = request.body.publisher;
-  const bookId = request.params.id;
+  const compiledBook = {
+    title: request.body.title,
+    imgUrl: request.body.image,
+    price: request.body.price,
+    inStock: request.body.inStock,
+    isbn: request.body.isbn,
+    publisher: request.body.publisher,
+    id: request.params.id,
+  };
   const authors = [];
   const genres = [];
   let i = 0;
@@ -45,15 +47,41 @@ router.put('/books/:id/edit', (request, response) => {
     genres.push(request.body['genre' + j]);
     j++;
   };
-  books.updateBook(bookId, title, imgUrl, price, inStock, isbn, publisher)
-  .then(() => books.addOrEditAuthors(bookId, authors))
-  .then(() => books.addOrEditGenres(bookId, genres))
-  .then(() => response.redirect(`/books/${bookId}`))
+  books.updateBook(compiledBook)
+  .then(() => books.addOrEditAuthors(compiledBook.id, authors))
+  .then(() => books.addOrEditGenres(compiledBook.id, genres))
+  .then(() => response.redirect(`/books/${compiledBook.id}`))
   .catch(error => console.error(error));
 });
 
 router.get('/books/create', (request, response) => {
   response.render('books/create');
+});
+
+router.post('/books/create', (request, response) => {
+  const compiledBook = {
+    title: request.body.title,
+    price: request.body.price,
+    image: request.body.image,
+    inStock: request.body.inStock,
+    isbn: request.body.isbn,
+    publisher: request.body.publisher,
+  };
+  const authors = [];
+  const genres = [];
+  let i = 0;
+  while (request.body['firstName' + i]) {
+    let author = {};
+    author.firstName = request.body['firstName' + i];
+    author.lastName = request.body['lastName' + i];
+    authors.push(author);
+    i++;
+  };
+  let j = 0;
+  while (request.body['genre' + j]) {
+    genres.push(request.body['genre' + j]);
+    j++;
+  };
 });
 
 router.get('/books/:id/edit', (request, response) => {
@@ -72,7 +100,7 @@ router.get('/books/:id', (request, response) => {
   .catch(error => console.error(error));
 });
 
-router.delete('/books/:id/delete', (request, response) => {
+router.delete('/books/:id/', (request, response) => {
   const id = request.params.id;
   books.deleteBook(id)
   .then(() => response.redirect('/'))
