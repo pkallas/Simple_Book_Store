@@ -62,6 +62,7 @@ const deleteBook = (bookId) => {
 };
 
 const createBook = (book) => {
+  console.log('This is the book in the sql statement ===> ', book);
   return db.query(`INSERT INTO books (title, price, img_url, in_stock, isbn, publisher)
   VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
   `, [book.title, book.price, book.image, book.inStock, book.isbn, book.publisher])

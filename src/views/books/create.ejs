@@ -1,32 +1,43 @@
 <%- include ../partials/header.ejs %>
 
-   <h1>Create Book</h1>
-   <form method="post" action="/books/create">
-    <div>
-     Title: <input name="title">
-    </div>
-    <div>
-     Price: <input name="price">
-   </div>
-   <div>
-     Image Link: <input name="image">
-   </div>
-   <div>
-     Number in Stock: <input name="inStock">
-   </div>
-   <div>
-     ISBN: <input name="isbn">
-   </div>
-   <div>
-     Publisher: <input name="publisher">
-   </div>
-   <h1>Authors</h1>
-     <button class="add-author-input">Add Author</button>
-   <h1>Genres</h1>
-     <button id="add-another-genre">Add Genre</button>
-    <div>
-      <input type="submit" value="Create Book">
-    </div>
-   </form>
+    <h1>Create Book</h1>
+    <form method="post" action="/books/create">
+      <div>
+        Title: <input name="title" required>
+      </div>
+      <div>
+        Price: <input name="price" required>
+      </div>
+      <div>
+        Image Link: <input name="image" required>
+      </div>
+      <div>
+        Number in Stock: <input name="inStock" required>
+      </div>
+      <div>
+        ISBN: <input name="isbn" required>
+      </div>
+      <div>
+        Publisher: <input name="publisher" required>
+      </div>
+      <h1>Authors</h1>
+        <div>
+          First Name: <input name="firstName0" required>
+          Last Name: <input name="lastName0" required>
+        </div>
+        <div>
+          <button type="button" class="add-author-input">Add Author</button>
+        </div>
+      <h1>Genres</h1>
+        <div>
+          Genre: <input name="genre0" required>
+        </div>
+        <div>
+          <button type="button" id="add-another-genre">Add Genre</button>
+        </div>
+       <div>
+         <input type="submit" value="Create Book">
+       </div>
+      </form>
 
 <% include ../partials/footer.ejs %>

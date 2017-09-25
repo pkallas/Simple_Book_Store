@@ -22,10 +22,59 @@ router.get('/books/search', (request, response) => {
     .catch(error => console.log(error));
 });
 
+router.get('/books/create', (request, response) => {
+  response.render('books/create');
+});
+
+router.post('/books/create', (request, response) => {
+  const compiledBook = {
+    title: request.body.title,
+    price: request.body.price,
+    image: request.body.image,
+    inStock: request.body.inStock,
+    isbn: request.body.isbn,
+    publisher: request.body.publisher,
+  };
+  console.log('compiled Book ===> ', compiledBook);
+  const authors = [];
+  const genres = [];
+  let i = 0;
+  while (request.body['firstName' + i]) {
+    let author = {};
+    author.firstName = request.body['firstName' + i];
+    author.lastName = request.body['lastName' + i];
+    authors.push(author);
+    i++;
+  };
+  let j = 0;
+  while (request.body['genre' + j]) {
+    genres.push(request.body['genre' + j]);
+    j++;
+  };
+  console.log('authors ===> ', authors);
+  console.log('genres ===> ', genres);
+  books.createBook(compiledBook)
+    .then(book => {
+      books.addOrEditAuthors(book[0].id, authors)
+      .then(() => books.addOrEditGenres(book[0].id, genres))
+      .then(() => response.render(`books/:${book[0].id}`));
+    })
+    .catch(error => console.error(error));
+});
+
+router.get('/books/:id/edit', (request, response) => {
+  const id = request.params.id;
+  books.getOneBook(id)
+  .then(book => {
+    books.getAllGenres().then(allGenres => response.render('books/edit', { book, allGenres }));
+  })
+  .catch(error => console.error(error));
+});
+
 router.put('/books/:id/edit', (request, response) => {
   const compiledBook = {
     title: request.body.title,
-    imgUrl: request.body.image,
+    image: request.body.image,
     price: request.body.price,
     inStock: request.body.inStock,
     isbn: request.body.isbn,
@@ -51,45 +100,6 @@ router.put('/books/:id/edit', (request, response) => {
   .then(() => books.addOrEditAuthors(compiledBook.id, authors))
   .then(() => books.addOrEditGenres(compiledBook.id, genres))
   .then(() => response.redirect(`/books/${compiledBook.id}`))
-  .catch(error => console.error(error));
-});
-
-router.get('/books/create', (request, response) => {
-  response.render('books/create');
-});
-
-router.post('/books/create', (request, response) => {
-  const compiledBook = {
-    title: request.body.title,
-    price: request.body.price,
-    image: request.body.image,
-    inStock: request.body.inStock,
-    isbn: request.body.isbn,
-    publisher: request.body.publisher,
-  };
-  const authors = [];
-  const genres = [];
-  let i = 0;
-  while (request.body['firstName' + i]) {
-    let author = {};
-    author.firstName = request.body['firstName' + i];
-    author.lastName = request.body['lastName' + i];
-    authors.push(author);
-    i++;
-  };
-  let j = 0;
-  while (request.body['genre' + j]) {
-    genres.push(request.body['genre' + j]);
-    j++;
-  };
-});
-
-router.get('/books/:id/edit', (request, response) => {
-  const id = request.params.id;
-  books.getOneBook(id)
-  .then(book => {
-    books.getAllGenres().then(allGenres => response.render('books/edit', { book, allGenres }));
-  })
   .catch(error => console.error(error));
 });
 
