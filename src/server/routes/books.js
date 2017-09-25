@@ -35,7 +35,6 @@ router.post('/books/create', (request, response) => {
     isbn: request.body.isbn,
     publisher: request.body.publisher,
   };
-  console.log('compiled Book ===> ', compiledBook);
   const authors = [];
   const genres = [];
   let i = 0;
@@ -51,13 +50,11 @@ router.post('/books/create', (request, response) => {
     genres.push(request.body['genre' + j]);
     j++;
   };
-  console.log('authors ===> ', authors);
-  console.log('genres ===> ', genres);
   books.createBook(compiledBook)
     .then(book => {
       books.addOrEditAuthors(book[0].id, authors)
       .then(() => books.addOrEditGenres(book[0].id, genres))
-      .then(() => response.render(`books/:${book[0].id}`));
+      .then(() => response.redirect(`/books/${book[0].id}`));
     })
     .catch(error => console.error(error));
 });
