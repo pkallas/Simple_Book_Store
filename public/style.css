@@ -1,0 +1,57 @@
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  display: none;
+  width: 600px;
+  max-width: 100%;
+  height: 400px;
+  max-height: 100%;
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+}
+
+.close-button {
+  border-color: red;
+  background-color: red;
+  position: absolute;
+  z-index: 1;
+  top: 25px;
+  right: 20px;
+  padding: 5px 10px;
+  color: white;
+}
+
+.modal-guts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.modal-guts > h1 {
+  text-align: center;
+}
+
+.total {
+  position: fixed;
+  padding: 1em;
+  font-weight: bold;
+  font-size: 20px;
+  top: 85%;
+  right: 0.5%;
+}
