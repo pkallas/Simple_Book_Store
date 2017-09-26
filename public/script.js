@@ -14,9 +14,26 @@ document.addEventListener('DOMContentLoaded', function () {
     authorInputs: function () {
       return document.querySelectorAll('.author-input');
     },
+    openCart: document.querySelector('.open-cart'),
+    modalOverlay: document.querySelector('.modal-overlay'),
+    modal: document.querySelector('.modal'),
+    closeCart: document.querySelector('.close-cart'),
+    total: document.querySelector('.total'),
+    cartContents: document.querySelector('.cart-contents'),
   };
-  // const genreCounter;
-  // const authorCounter;
+
+  if (elements.openCart) {
+    elements.openCart.addEventListener('click', function () {
+      elements.modalOverlay.style.display = 'flex';
+      elements.modal.style.display = 'flex';
+    });
+
+    elements.closeCart.addEventListener('click', function () {
+      elements.modalOverlay.style.display = 'none';
+      elements.modal.style.display = 'none';
+    });
+  };
+
   if (elements.deleteButton) {
     elements.deleteButton.addEventListener('click', function () {
       const bookId = elements.deleteButton.getAttribute('data-id');
