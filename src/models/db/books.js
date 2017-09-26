@@ -12,8 +12,7 @@ const getAllBookImagesId = () => {
 
 const getOneBook = bookID => {
   return db.query(`SELECT books.id, title, price, img_url, in_stock, isbn, publisher,
-  array_agg(DISTINCT first_name) AS first_names,
-  array_agg(DISTINCT last_name) AS last_names,
+  json_agg(DISTINCT authors) AS authors,
   array_agg(DISTINCT genres.name) AS genres FROM books
   JOIN authors_books ON books.id = authors_books.book_id
   JOIN authors ON authors.id = authors_books.author_id

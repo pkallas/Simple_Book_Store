@@ -5,8 +5,12 @@
     <div id="single-book-info">
       <div id="single-book-title">Title: <%=book.title%></div>
       <div id="single-book-author">
-        <% book.first_names.forEach(function (name, index) {%>
-          By: <%=name%> <%=book.last_names[index]%>
+        <% book.authors.forEach(function (author, index) {%>
+          <% if (index > 0) {%>
+            <span>& <%=author.first_name%> <%=author.last_name%></span>
+          <% } else {%>
+          By: <span><%=author.first_name%> <%=author.last_name%></span>
+        <% } %>
           <% }) %>
       </div>
       <div id="single-book-genre">Genre(s): <%=book.genres.join(', ')%>
