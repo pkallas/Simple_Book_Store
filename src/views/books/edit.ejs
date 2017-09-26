@@ -24,10 +24,10 @@
         <div>
         Author
       </div>
-      <% book.first_names.forEach(function (firstName, index) {%>
+      <% book.authors.forEach(function (author, index) {%>
         <div class="author-input">
-          First Name: <input name="firstName<%=index%>" value=<%=firstName%>>
-          Last Name: <input name="lastName<%=index%>" value=<%=book.last_names[index]%>>
+          First Name: <input name="firstName<%=index%>" value=<%=author.first_name%>>
+          Last Name: <input name="lastName<%=index%>" value=<%=author.last_name%>>
           <button id="button-author<%=index%>" type="button" class="remove-input">X</button>
         </div>
       <% }) %>
