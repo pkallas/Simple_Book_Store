@@ -40,6 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let bookTotalCount = 0;
         let totalPrice = 0;
         arrayOfElements.forEach(function (element) {
+          if (parseFloat(element.value) < 0) {
+            element.value = 0;
+          }
           let bookPrice = parseFloat(element.nextElementSibling.innerText.replace(/\$/g, ''));
           let currentBookCount = parseFloat(element.value);
           bookTotalCount += currentBookCount;
