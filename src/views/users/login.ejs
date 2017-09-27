@@ -1,5 +1,18 @@
 <% include ../partials/header.ejs %>
 
-
+  <% if (errorMessage) {%>
+    <div class="error">
+      <%= errorMessage %>
+    </div>
+    <% } %>
+  <form method="post" action="/login">
+  <div>
+    Username or Email Address: <input name="login" required>
+  </div>
+  <div>
+    Password: <input type="password" name="password" required>
+  </div>
+  <input type="submit" value="Login">
+</form>
 
 <% include ../partials/footer.ejs %>

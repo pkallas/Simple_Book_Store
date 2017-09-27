@@ -18,7 +18,16 @@ router.post('/signup', (request, response) => {
   };
   users.create(user)
   .then(() => response.redirect('/'))
-  .catch(error => console.error(error));
+  .catch(error => {
+    if (error.constraint === 'users_username_key') {
+      response.render('users/signup', { errorMessage: 'Username is taken. Try again.' });
+    } else if (error.constraint === 'users_email_key') {
+      response.render('users/signup', { errorMessage: 'Email is taken. Try again.' });
+    } else {
+      // Replace with calling next with error
+      console.error(error);
+    }
+  });
 });
 
 router.get('/login', (request, response) => {
