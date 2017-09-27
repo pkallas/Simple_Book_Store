@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const books = require('../../models/db/books');
 const bookRoutes = require('./books');
+const userRoutes = require('./users');
 
 router.get('/', (request, response) => {
   books.getAllBookImagesId()
@@ -10,5 +11,6 @@ router.get('/', (request, response) => {
 });
 
 router.use(bookRoutes);
+router.use(userRoutes);
 
 module.exports = router;
