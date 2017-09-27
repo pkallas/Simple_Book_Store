@@ -1,7 +1,5 @@
 <% include ../partials/header.ejs %>
 
-<% include ../partials/modal.ejs %>
-
   <% if (book) {%>
       <img  id="edit-book-image" src=<%=book.img_url%>>
       <form id="edit-book-form" method="POST" action="/books/<%=book.id%>/edit?_method=PUT">
