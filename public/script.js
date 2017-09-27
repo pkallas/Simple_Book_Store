@@ -96,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function () {
       calculateOpenCartTotal(elements.bookCount());
       removeCartItem.addEventListener('click', function () {
         event.target.parentElement.remove();
-        elements.openCart.innerText = `Cart (${numberInCart() - 1})`;
+        const subValue = event.target.previousElementSibling.previousElementSibling.value;
+        elements.openCart.innerText = `Cart (${numberInCart() - subValue})`;
       });
     });
   };
