@@ -5,6 +5,7 @@ const routes = require('./server/routes');
 const middleware = require('./server/middleware');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const session = require('express-session');
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
