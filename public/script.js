@@ -20,6 +20,35 @@ document.addEventListener('DOMContentLoaded', function () {
     closeCart: document.querySelector('.close-cart'),
     total: document.querySelector('.total'),
     cartContents: document.querySelector('.cart-contents'),
+    addToCart: document.querySelector('#add-to-cart-button'),
+    bookTitle: document.querySelector('#single-book-title'),
+    bookPrice: document.querySelector('#single-book-price'),
+    bookISBN: document.querySelector('#single-book-isbn'),
+    parsedBookISBN: document.querySelector('#single-book-isbn').innerText.replace(/ISBN: /g, 'isbn'),
+    bookCount: function () {
+      return document.querySelectorAll('.book-count');
+    },
+  };
+
+  const numberInCart = function () {
+    return parseInt(elements.openCart.innerText.match(/\d+/));
+  };
+
+  const calculateOpenCartTotal = function (arrayOfElements) {
+    arrayOfElements.forEach(function (element) {
+      element.addEventListener('blur', function () {
+        let bookTotalCount = 0;
+        arrayOfElements.forEach(function (element) {
+          bookTotalCount += parseInt(element.value);
+        });
+
+        elements.openCart.innerText = `Cart (${bookTotalCount})`;
+      });
+    });
+  };
+
+  if (elements.bookCount().length > 0) {
+    calculateOpenCartTotal(elements.bookCount());
   };
 
   if (elements.openCart) {
@@ -31,6 +60,44 @@ document.addEventListener('DOMContentLoaded', function () {
     elements.closeCart.addEventListener('click', function () {
       elements.modalOverlay.style.display = 'none';
       elements.modal.style.display = 'none';
+    });
+  };
+
+  if (elements.addToCart) {
+    elements.addToCart.addEventListener('click', function () {
+      elements.openCart.innerText = `Cart (${numberInCart() + 1})`;
+      if (document.querySelector(`#${elements.parsedBookISBN}`)) {
+        let currentBookCount = parseInt(document.querySelector(`#${elements.parsedBookISBN}`).value);
+        document.querySelector(`#${elements.parsedBookISBN}`).value = currentBookCount + 1;
+        return;
+      };
+
+      let listItem = document.createElement('li');
+      listItem.className = 'item';
+      let bookTitleSpan = document.createElement('span');
+      bookTitleSpan.className = 'book-title-span';
+      bookTitleSpan.innerText = elements.bookTitle.innerText.replace(/Title: /g, '');
+      let bookPriceSpan = document.createElement('span');
+      bookPriceSpan.className = 'book-price-span';
+      bookPriceSpan.innerText = elements.bookPrice.innerText.replace(/Price: /g, '');
+      let removeCartItem = document.createElement('button');
+      removeCartItem.className = 'remove-cart-item';
+      removeCartItem.innerText = 'X';
+      let numberOfBook = document.createElement('input');
+      numberOfBook.className = 'book-count';
+      numberOfBook.type = 'number';
+      numberOfBook.id = elements.parsedBookISBN;
+      numberOfBook.value += 1;
+      listItem.appendChild(bookTitleSpan);
+      listItem.appendChild(numberOfBook);
+      listItem.appendChild(bookPriceSpan);
+      listItem.appendChild(removeCartItem);
+      elements.cartContents.appendChild(listItem);
+      calculateOpenCartTotal(elements.bookCount());
+      removeCartItem.addEventListener('click', function () {
+        event.target.parentElement.remove();
+        elements.openCart.innerText = `Cart (${numberInCart() - 1})`;
+      });
     });
   };
 
