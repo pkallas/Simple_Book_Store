@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
     bookTitle: document.querySelector('#single-book-title'),
     bookPrice: document.querySelector('#single-book-price'),
     bookISBN: document.querySelector('#single-book-isbn'),
-    parsedBookISBN: document.querySelector('#single-book-isbn').innerText.replace(/ISBN: /g, 'isbn'),
     bookCount: function () {
       return document.querySelectorAll('.book-count');
     },
+    inStock: document.querySelector('#single-book-in-stock'),
   };
 
   const numberInCart = function () {
@@ -70,12 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   if (elements.addToCart) {
+    let parsedBookISBN = document.querySelector('#single-book-isbn').innerText.replace(/ISBN: /g, 'isbn');
     let bookPrice = elements.bookPrice.innerText.replace(/Price: \$/g, '');
     elements.addToCart.addEventListener('click', function () {
       elements.openCart.innerText = `Cart (${numberInCart() + 1})`;
-      if (document.querySelector(`#${elements.parsedBookISBN}`)) {
-        let newBookCount = parseInt(document.querySelector(`#${elements.parsedBookISBN}`).value) + 1;
-        document.querySelector(`#${elements.parsedBookISBN}`).value = newBookCount;
+      if (document.querySelector(`#${parsedBookISBN}`)) {
+        let newBookCount = parseInt(document.querySelector(`#${parsedBookISBN}`).value) + 1;
+        document.querySelector(`#${parsedBookISBN}`).value = newBookCount;
         elements.cartTotal.innerText = `Total: $${parseFloat(bookPrice * newBookCount).toFixed(2)}`;
         return;
       };
@@ -94,7 +95,9 @@ document.addEventListener('DOMContentLoaded', function () {
       let numberOfBook = document.createElement('input');
       numberOfBook.className = 'book-count';
       numberOfBook.type = 'number';
-      numberOfBook.id = elements.parsedBookISBN;
+      numberOfBook.id = parsedBookISBN;
+      numberOfBook.min = 0;
+      numberOfBook.max = parseFloat(elements.inStock.innerText.replace(/In Stock: /g, ''));
       numberOfBook.value += 1;
       listItem.appendChild(bookTitleSpan);
       listItem.appendChild(numberOfBook);
