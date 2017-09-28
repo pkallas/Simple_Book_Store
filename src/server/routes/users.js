@@ -79,7 +79,13 @@ router.put('/admin/permissions', (request, response) => {
       role: request.body.role,
     };
     users.changeRole(user)
-    .then(() => response.render('users/admin', { message: `User ${user.login} is now a ${user.role}` }))
+    .then((userId) => {
+      if (userId.length > 0) {
+        response.render('users/admin', { message: `User ${user.login} is now a ${user.role}.` });
+      } else {
+        response.render('users/admin', { errorMessage: `User ${user.login} not found.` });
+      }
+    })
     .catch(error => console.error(error));
   } else {
     response.redirect('/');

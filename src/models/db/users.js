@@ -14,9 +14,8 @@ const create = (user) => {
 };
 
 const changeRole = (user) => {
-  return db.query(`UPDATE users SET role = $2 WHERE username = $1 OR email = $1`,
+  return db.query(`UPDATE users SET role = $2 WHERE username = $1 OR email = $1 RETURNING id`,
   [user.login, user.role])
-  .then(result => console.log('Successfully changed role'))
   .catch(error => {
     throw error;
   });
