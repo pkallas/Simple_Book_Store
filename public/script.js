@@ -123,9 +123,13 @@ document.addEventListener('DOMContentLoaded', function () {
   if (elements.deleteButton) {
     elements.deleteButton.addEventListener('click', function () {
       const bookId = elements.deleteButton.getAttribute('data-id');
-      fetch(`/books/${bookId}`, { method: 'delete' })
+      fetch(`/books/${bookId}`,
+        { method: 'delete',
+        
+      })
       .then(response => {
-        window.location = '/';
+        console.log(response);
+        // window.location = '/';
       })
       .catch(error => console.error(error));
     });

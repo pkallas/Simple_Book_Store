@@ -64,9 +64,18 @@ router.post('/login', (request, response) => {
   .catch(error => console.error(error));
 });
 
+router.get('/admin', (request, response) => {
+  if (request.session.role === 'admin') {
+    response.render('users/admin');
+  } else {
+    response.redirect('/');
+  }
+});
+
 router.get('/logout', (request, response) => {
-  request.session.destroy(error => console.error(error));
+  request.session.destroy();
   response.redirect('/');
 });
+
 
 module.exports = router;

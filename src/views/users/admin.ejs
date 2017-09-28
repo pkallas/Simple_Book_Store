@@ -1,0 +1,19 @@
+<% include ../partials/header.ejs %>
+
+  <a href="/books/create"><button>Add a new book</button></a>
+
+  <h1>Change User Permissions</h1>
+  <form method="POST" action="/users?_method=PUT">
+    <div>
+      Username/Email: <input id="user-login" name="login">
+    </div>
+    <div>
+      Role: <select name="role">
+        <option value="reader">reader</option>
+        <option value="clerk">clerk</option>
+        <option value="admin">admin</option>
+      </select>
+    </div>
+  </form>
+
+<% include ../partials/footer.ejs %>

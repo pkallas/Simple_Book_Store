@@ -127,7 +127,7 @@ router.delete('/books/:id/', (request, response) => {
   if (request.session.role === 'admin') {
     const id = request.params.id;
     books.deleteBook(id)
-    .then(() => response.redirect('/'))
+    .then(() => response.send(`Book with id ${request.params.id} was deleted`))
     .catch(error => console.error(error));
   } else {
     response.status(401).send('Unauthorized User');
