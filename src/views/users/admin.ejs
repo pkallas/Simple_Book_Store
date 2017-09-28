@@ -6,6 +6,9 @@
   <% if (message) {%>
     <div><%= message %></div>
   <% } %>
+  <% if (errorMessage) {%>
+    <div><%= errorMessage %></div>
+  <% } %>
   <form method="POST" action="/admin/permissions?_method=PUT">
     <div>
       Username/Email: <input id="user-login" name="login">
