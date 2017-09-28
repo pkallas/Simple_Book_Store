@@ -124,10 +124,14 @@ router.get('/books/:id', (request, response) => {
 });
 
 router.delete('/books/:id/', (request, response) => {
-  const id = request.params.id;
-  books.deleteBook(id)
-  .then(() => response.redirect('/'))
-  .catch(error => console.error(error));
+  if (request.session.role === 'admin') {
+    const id = request.params.id;
+    books.deleteBook(id)
+    .then(() => response.redirect('/'))
+    .catch(error => console.error(error));
+  } else {
+    response.status(401).send('Unauthorized User');
+  }
 });
 
 module.exports = router;
