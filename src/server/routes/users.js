@@ -17,7 +17,11 @@ router.post('/signup', (request, response) => {
     password: request.body.password,
   };
   users.create(user)
-  .then(() => response.redirect('/'))
+  .then((newUser) => {
+    request.session.userId = newUser;
+    request.session.role = 'reader';
+    response.redirect('/');
+  })
   .catch(error => {
     if (error.constraint === 'users_username_key') {
       response.render('users/signup', { errorMessage: 'Username is taken. Try again.' });
@@ -46,7 +50,8 @@ router.post('/login', (request, response) => {
       users.isValidPassword(user.password, returnedUser.password)
       .then(isValid => {
         if (isValid) {
-          // set session by user id and role
+          request.session.userId = returnedUser.id;
+          request.session.role = returnedUser.role;
           response.redirect('/');
         } else {
           response.render('users/login', { errorMessage });

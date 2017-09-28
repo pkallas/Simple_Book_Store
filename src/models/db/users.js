@@ -5,8 +5,8 @@ const create = (user) => {
   return bcrypt.hash(user.password, 10)
   .then(encryptedPassword => {
     return db.query(`INSERT INTO users (username, email, password)
-    VALUES ($1, $2, $3)`, [user.username, user.email, encryptedPassword])
-    .then(result => console.log('Successfully created user'));
+    VALUES ($1, $2, $3) RETURNING id`, [user.username, user.email, encryptedPassword])
+    .then(newUserId => newUserId[0].id);
   })
   .catch(error => {
     throw error;
