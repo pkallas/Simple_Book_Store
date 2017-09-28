@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const users = require('../../models/db/users');
 
-router.get('/signup', (request, response) => {
+router.get('/signup', (request, response, next) => {
   response.render('users/signup');
 });
 
-router.post('/signup', (request, response) => {
+router.post('/signup', (request, response, next) => {
   if (request.body.password !== request.body.confirmPassword) {
     response.render('users/signup', { errorMessage: 'Please make sure your passwords match' });
   }
@@ -28,8 +28,7 @@ router.post('/signup', (request, response) => {
     } else if (error.constraint === 'users_email_key') {
       response.render('users/signup', { errorMessage: 'Email is taken. Try again.' });
     } else {
-      // Replace with calling next with error
-      console.error(error);
+      next(error);
     }
   });
 });
@@ -38,7 +37,7 @@ router.get('/login', (request, response) => {
   response.render('users/login');
 });
 
-router.post('/login', (request, response) => {
+router.post('/login', (request, response, next) => {
   const user = {
     login: request.body.login,
     password: request.body.password,
@@ -61,18 +60,18 @@ router.post('/login', (request, response) => {
       response.render('users/login', { errorMessage });
     }
   })
-  .catch(error => console.error(error));
+  .catch(error => next(error));
 });
 
 router.get('/admin', (request, response) => {
   if (request.session.role === 'admin') {
     response.render('users/admin');
   } else {
-    response.redirect('/');
+    response.status(401).render('common/not_permitted');
   }
 });
 
-router.put('/admin/permissions', (request, response) => {
+router.put('/admin/permissions', (request, response, next) => {
   if (request.session.role === 'admin') {
     const user = {
       login: request.body.login,
@@ -86,9 +85,9 @@ router.put('/admin/permissions', (request, response) => {
         response.render('users/admin', { errorMessage: `User ${user.login} not found.` });
       }
     })
-    .catch(error => console.error(error));
+    .catch(error => next(error));
   } else {
-    response.redirect('/');
+    response.status(401).render('common/not_permitted');
   }
 });
 

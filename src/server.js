@@ -27,6 +27,6 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(middleware);
+app.use(middleware.setDefaultResponseLocals);
 
 app.use(routes);

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const books = require('../../models/db/books');
 
-router.get('/books/search', (request, response) => {
+router.get('/books/search', (request, response, next) => {
   let offset;
   let searchTerm = request.query.search
     .toLowerCase()
@@ -19,18 +19,18 @@ router.get('/books/search', (request, response) => {
     .then(books => {
       response.render('books/search', { books, offset, searchTerm: request.query.search });
     })
-    .catch(error => console.log(error));
+    .catch(error => next(error));
 });
 
 router.get('/books/create', (request, response) => {
   if (request.session.role === 'admin') {
     response.render('books/create');
   } else {
-    response.redirect('/');
+    response.status(401).render('common/not_permitted');
   }
 });
 
-router.post('/books/create', (request, response) => {
+router.post('/books/create', (request, response, error) => {
   if (request.session.role === 'admin') {
     const compiledBook = {
       title: request.body.title,
@@ -61,26 +61,26 @@ router.post('/books/create', (request, response) => {
         .then(() => books.addOrEditGenres(book[0].id, genres))
         .then(() => response.redirect(`/books/${book[0].id}`));
       })
-      .catch(error => console.error(error));
+      .catch(error => next(error));
   } else {
     response.status(401).send('Unauthorized user');
   }
 });
 
-router.get('/books/:id/edit', (request, response) => {
+router.get('/books/:id/edit', (request, response, error) => {
   if (request.session.role === 'clerk' || request.session.role === 'admin') {
     const id = request.params.id;
     books.getOneBook(id)
     .then(book => {
-      books.getAllGenres().then(allGenres => response.render('books/edit', { book, allGenres }));
+      return books.getAllGenres().then(allGenres => response.render('books/edit', { book, allGenres }));
     })
-    .catch(error => console.error(error));
+    .catch(error => next(error));
   } else {
-    response.redirect('/');
+    response.status(401).render('common/not_permitted');
   }
 });
 
-router.put('/books/:id/edit', (request, response) => {
+router.put('/books/:id/edit', (request, response, next) => {
   if (request.session.role === 'clerk' || request.session.role === 'admin') {
     const compiledBook = {
       title: request.body.title,
@@ -110,25 +110,25 @@ router.put('/books/:id/edit', (request, response) => {
     .then(() => books.addOrEditAuthors(compiledBook.id, authors))
     .then(() => books.addOrEditGenres(compiledBook.id, genres))
     .then(() => response.redirect(`/books/${compiledBook.id}`))
-    .catch(error => console.error(error));
+    .catch(error => next(error));
   } else {
     response.status(401).send('Unauthorized user');
   }
 });
 
-router.get('/books/:id', (request, response) => {
+router.get('/books/:id', (request, response, next) => {
   const id = request.params.id;
   books.getOneBook(id)
   .then(book => response.render('books/book', { book }))
-  .catch(error => console.error(error));
+  .catch(error => next(error));
 });
 
-router.delete('/books/:id/', (request, response) => {
+router.delete('/books/:id/', (request, response, next) => {
   if (request.session.role === 'admin') {
     const id = request.params.id;
     books.deleteBook(id)
     .then(() => response.send(`Book with id ${id} was deleted`))
-    .catch(error => console.error(error));
+    .catch(error => response.send(`Error deleting book with id ${id}`));
   } else {
     response.status(401).send('Unauthorized User');
   }
