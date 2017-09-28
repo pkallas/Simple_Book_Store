@@ -2,12 +2,12 @@ const db = require('./db');
 
 const getAllBooks = () => {
   return db.query(`SELECT * FROM books`)
-  .catch(error => console.error(error));
+  .catch(error => {throw error});
 };
 
 const getAllBookImagesId = () => {
   return db.query(`SELECT id, img_url FROM books`)
-  .catch(error => console.error(error));
+  .catch(error => {throw error});
 };
 
 const getOneBook = bookID => {
@@ -23,7 +23,7 @@ const getOneBook = bookID => {
   ORDER BY books.id`,
   [bookID])
   .then(book => book[0])
-  .catch(error => console.error(error));
+  .catch(error => {throw error});
 };
 
 const searchForBooks = (searchQuery, offSet) => {
@@ -38,7 +38,7 @@ const searchForBooks = (searchQuery, offSet) => {
     OR LOWER(name) LIKE $1
     GROUP BY books.id, title, price, img_url, first_name, last_name
     OFFSET $2 LIMIT 10`, [searchQuery, offSet])
-    .catch(error => console.error(error));
+    .catch(error => {throw error});
 };
 
 const updateBook = (book) => {
@@ -47,24 +47,24 @@ const updateBook = (book) => {
     in_stock = $5, isbn = $6, publisher = $7
     WHERE id = $1
     `, [book.id, book.title, book.image, book.price, book.inStock, book.isbn, book.publisher])
-    .catch(error => console.error(error));
+    .catch(error => {throw error});
 };
 
 const getAllGenres = () => {
   return db.query(`SELECT name FROM genres`)
-  .catch(error => console.error(error));
+  .catch(error => {throw error});
 };
 
 const deleteBook = (bookId) => {
   return db.query(`DELETE FROM books WHERE id = $1`, [bookId])
-  .catch(error => console.error(error));
+  .catch(error => {throw error});
 };
 
 const createBook = (book) => {
   return db.query(`INSERT INTO books (title, price, img_url, in_stock, isbn, publisher)
   VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
   `, [book.title, book.price, book.image, book.inStock, book.isbn, book.publisher])
-  .catch(error => console.error(error));
+  .catch(error => {throw error});
 };
 
 const addOrEditAuthors = (bookId, authors) => {
@@ -77,7 +77,7 @@ const addOrEditAuthors = (bookId, authors) => {
             return transaction.query(`DELETE FROM authors_books WHERE book_id = $1`, [bookId]);
           }
         })
-        .catch(error => console.error(error))
+        .catch(error => {throw error})
     );
     authors.forEach(author => {
       queries.push(
@@ -90,16 +90,16 @@ const addOrEditAuthors = (bookId, authors) => {
                 .then(newAuthor => {
                   return transaction.query(`INSERT INTO authors_books(author_id, book_id)
                   VALUES($1, $2)`, [newAuthor[0].id, bookId])
-                    .catch(error => console.error(error));
+                    .catch(error => {throw error});
                 })
                 .catch(error => console.error(error));
             } else {
               return transaction.query(`INSERT INTO authors_books(author_id, book_id)
               VALUES($1, $2)`, [authorId.id, bookId])
-                .catch(error => console.error(error));
+                .catch(error => {throw error});
             }
           })
-          .catch(error => console.error(error))
+          .catch(error => {throw error})
       );
     });
     return transaction.batch(queries)
@@ -127,13 +127,13 @@ const addOrEditGenres = (bookId, genres) => {
                 .then(newGenre => {
                   return transaction.query(`INSERT INTO genres_books(genre_id, book_id)
                   VALUES ($1 , $2)`, [newGenre[0].id, bookId])
-                    .catch(error => console.error(error));
+                    .catch(error => {throw error});
                 })
-                .catch(error => console.error(error));
+                .catch(error => {throw error});
             } else {
               return transaction.query(`INSERT INTO genres_books(genre_id, book_id)
               VALUES ($1 , $2)`, [genreId.id, bookId])
-                .catch(error => console.error(error));
+                .catch(error => {throw error});
             }
           })
       );
