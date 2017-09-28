@@ -46,9 +46,11 @@
         <input class="edit" type="submit" value="Edit">
       </div>
       </form>
-      <div>
-        <button data-id="<%=book.id%>" id="delete-button">Delete</button>
-      </div>
+        <% if (role === 'admin') {%>
+          <div>
+          <button data-id="<%=book.id%>" id="delete-button">Delete</button>
+        </div>
+        <% } %>
       <datalist id="genres">
         <% allGenres.forEach(function (genre) { %>
           <option value="<%=genre.name%>">

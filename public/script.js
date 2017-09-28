@@ -125,11 +125,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const bookId = elements.deleteButton.getAttribute('data-id');
       fetch(`/books/${bookId}`,
         { method: 'delete',
-        
+          credentials: 'same-origin',
       })
       .then(response => {
-        console.log(response);
-        // window.location = '/';
+        window.location = '/';
       })
       .catch(error => console.error(error));
     });

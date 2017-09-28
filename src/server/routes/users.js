@@ -72,6 +72,20 @@ router.get('/admin', (request, response) => {
   }
 });
 
+router.put('/admin/permissions', (request, response) => {
+  if (request.session.role === 'admin') {
+    const user = {
+      login: request.body.login,
+      role: request.body.role,
+    };
+    users.changeRole(user)
+    .then(() => response.render('users/admin', { message: `User ${user.login} is now a ${user.role}` }))
+    .catch(error => console.error(error));
+  } else {
+    response.redirect('/');
+  }
+});
+
 router.get('/logout', (request, response) => {
   request.session.destroy();
   response.redirect('/');
