@@ -64,4 +64,9 @@ router.post('/login', (request, response) => {
   .catch(error => console.error(error));
 });
 
+router.get('/logout', (request, response) => {
+  request.session.destroy(error => console.error(error));
+  response.redirect('/');
+});
+
 module.exports = router;
