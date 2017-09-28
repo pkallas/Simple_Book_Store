@@ -3,7 +3,10 @@
   <a href="/books/create"><button>Add a new book</button></a>
 
   <h1>Change User Permissions</h1>
-  <form method="POST" action="/users?_method=PUT">
+  <% if (message) {%>
+    <div><%= message %></div>
+  <% } %>
+  <form method="POST" action="/admin/permissions?_method=PUT">
     <div>
       Username/Email: <input id="user-login" name="login">
     </div>
@@ -14,6 +17,7 @@
         <option value="admin">admin</option>
       </select>
     </div>
+    <input type="submit" value="Edit Role">
   </form>
 
 <% include ../partials/footer.ejs %>
