@@ -36,9 +36,17 @@ const isValidPassword = (plaintextPassword, encryptedPassword) => {
   });
 };
 
+const getCart = (userId) => {
+  return db.query(`SELECT title, price, quantity FROM carts WHERE user_id = $1
+    JOIN books ON books.id = carts.book_id
+    `, [userId])
+  .catch(error => {throw error});
+};;
+
 module.exports = {
   create,
   changeRole,
   getByLogin,
   isValidPassword,
+  getCart,
 };
