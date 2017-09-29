@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db-init": "psql < seeds/schema.sql && psql < seeds/load-data.sql",
+    "db-init": "psql < seeds/schema.sql && psql simple_book_store < node_modules/connect-pg-simple/table.sql && psql < seeds/load-data.sql",
     "start": "nodemon"
   },
   "repository": {
@@ -24,6 +24,7 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.1",
+    "connect-pg-simple": "^4.2.1",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
