@@ -40,8 +40,22 @@ const getCart = (userId) => {
   return db.query(`SELECT title, price, quantity FROM carts WHERE user_id = $1
     JOIN books ON books.id = carts.book_id
     `, [userId])
-  .catch(error => {throw error});
+  .catch(error => {
+    throw error;
+  });
 };;
+
+const updateCart = (userId, cart) => {
+  return db.query(`SELECT id FROM books WHERE title = $1`, [cart.title])
+  .then(bookId => {
+    return db.query(`UPDATE cart SET quantity = $3
+      WHERE cart.user_id = $1 AND cart.book_id = $2
+      `, [userId, bookId, cart.quantity]);
+  })
+  .catch(error => {
+    throw error;
+  });
+};
 
 module.exports = {
   create,
@@ -49,4 +63,5 @@ module.exports = {
   getByLogin,
   isValidPassword,
   getCart,
+  updateCart,
 };
