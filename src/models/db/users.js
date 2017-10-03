@@ -37,16 +37,17 @@ const isValidPassword = (plaintextPassword, encryptedPassword) => {
 };
 
 const getCart = (userId) => {
-  return db.query(`SELECT title, price, quantity FROM carts WHERE user_id = $1
+  return db.query(`SELECT books.id, title, price, quantity FROM carts
     JOIN books ON books.id = carts.book_id
+    WHERE user_id = $1
     `, [userId])
   .catch(error => {
     throw error;
   });
 };;
 
-const updateCart = (userId, cart) => {
-  return db.query(`SELECT id FROM books WHERE title = $1`, [cart.title])
+const addOrUpdateCart = (userId, cart) => {
+  return db.query(`SELECT id FROM books WHERE id = $1`, [cart.bookId])
   .then(bookId => {
     return db.query(`DELETE FROM carts WHERE cart.user_id = $1 AND cart.book_id = $2
       `, [userId, bookId])
@@ -61,11 +62,20 @@ const updateCart = (userId, cart) => {
   });
 };
 
+const removeFromCart = (userId, bookId) => {
+  return db.query(`DELETE FROM carts WHERE cart.user_id = $1 AND cart.book_id = $2
+    `, [userId, bookId])
+  .catch(error => {
+    throw error;
+  });
+};
+
 module.exports = {
   create,
   changeRole,
   getByLogin,
   isValidPassword,
   getCart,
-  updateCart,
+  addOrUpdateCart,
+  removeFromCart,
 };
