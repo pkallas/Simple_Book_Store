@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
     bookCount: function () {
       return document.querySelectorAll('.book-count');
     },
+    bookPriceSpan: function () {
+      return document.querySelectorAll('.book-price-span');
+    },
   };
 
   const numberInCart = function () {
@@ -213,11 +216,18 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   if (elements.removeCartItem().length > 0) {
-    let total = 0;
-    elements.bookCount.forEach(function (element) {
-      total += parseInt(element.value);;
+    let outerCartTotal = 0;
+    let innerCartTotal = 0;
+    elements.bookCount().forEach(function (element) {
+      outerCartTotal += parseInt(element.value);;
     });
-    elements.openCart.innerText = `(${total})`;
+    elements.bookPriceSpan().forEach(function (element) {
+      let bookPrice = parseFloat(element.innerText.replace(/\$/g, ''));
+      let bookAmount = parseInt(element.previousElementSibling.value);
+      innerCartTotal += (bookPrice * bookAmount);
+    });
+    elements.openCart.innerText = `(${outerCartTotal})`;
+    elements.cartTotal.innerText = `$${innerCartTotal.toFixed(2)}`;
     removeFromCart();
   }
 });
