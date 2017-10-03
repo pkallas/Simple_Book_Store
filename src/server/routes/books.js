@@ -63,7 +63,7 @@ router.post('/books/create', (request, response, error) => {
       })
       .catch(error => next(error));
   } else {
-    response.status(401).send('Unauthorized user');
+    response.status(401).render('common/not_permitted');
   }
 });
 
@@ -112,7 +112,7 @@ router.put('/books/:id/edit', (request, response, next) => {
     .then(() => response.redirect(`/books/${compiledBook.id}`))
     .catch(error => next(error));
   } else {
-    response.status(401).send('Unauthorized user');
+    response.status(401).render('common/not_permitted');
   }
 });
 
@@ -130,7 +130,7 @@ router.delete('/books/:id/', (request, response, next) => {
     .then(() => response.send(`Book with id ${id} was deleted`))
     .catch(error => response.send(`Error deleting book with id ${id}`));
   } else {
-    response.status(401).send('Unauthorized User');
+    response.status(401).render('common/not_permitted');
   }
 });
 
