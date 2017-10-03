@@ -96,4 +96,23 @@ router.get('/logout', (request, response) => {
   response.redirect('/');
 });
 
+router.delete('/cart', (request, respose) => {
+  const userId = request.session.userId;
+  const bookId = request.body.bookId;
+  users.removeCartItem(userId, bookId)
+  .then(result => response.send(`Cart Item ${bookId} has been deleted`))
+  .catch(error => response.send(`Cart Item ${bookId} could not be deleted`));
+});
+
+router.put('/cart', (request, response) => {
+  const userCart = {
+    userId: request.session.userId,
+    bookId: request.body.bookId,
+    quantity: request.body.quantity,
+  };
+  users.addOrUpdateCart(userCart)
+  .then(result => response.send('Cart has been updated'))
+  .catch(error => response.send('Cart update went wrong'));
+});
+
 module.exports = router;
