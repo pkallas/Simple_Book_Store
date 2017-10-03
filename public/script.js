@@ -28,10 +28,30 @@ document.addEventListener('DOMContentLoaded', function () {
       return document.querySelectorAll('.book-count');
     },
     inStock: document.querySelector('#single-book-in-stock'),
+    removeCartItem: function () {
+      return document.querySelectorAll('.remove-from-cart');
+    },
+    bookCount: function () {
+      return document.querySelectorAll('.book-count');
+    },
   };
 
   const numberInCart = function () {
     return parseInt(elements.openCart.innerText.match(/\d+/));
+  };
+
+  const removeFromCart = function () {
+    let bookPrice = elements.bookPrice.innerText.replace(/Price: \$/g, '') || event.target.previousElementSibling.innerText.replace(/Price: \$/g, '');
+    elements.removeCartItem().forEach(function (element) {
+      element.addEventListener('click', function () {
+        event.target.parentElement.remove();
+        const subValue = event.target.previousElementSibling.previousElementSibling.value;
+        const itemSum = (parseFloat(subValue) * parseFloat(bookPrice)).toFixed(2);
+        const currentTotal = parseFloat(elements.cartTotal.innerText.replace(/Total: \$/g, '')).toFixed(2);
+        elements.cartTotal.innerText = `Total: $${parseFloat(currentTotal - itemSum).toFixed(2)}`;
+        elements.openCart.innerText = `Cart (${numberInCart() - subValue})`;
+      });
+    });
   };
 
   const calculateOpenCartTotal = function (arrayOfElements) {
@@ -106,14 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
       elements.cartContents.appendChild(listItem);
       elements.cartTotal.innerText = `Total: $${parseFloat(bookPrice)}`;
       calculateOpenCartTotal(elements.bookCount());
-      removeCartItem.addEventListener('click', function () {
-        event.target.parentElement.remove();
-        const subValue = event.target.previousElementSibling.previousElementSibling.value;
-        const itemSum = (parseFloat(subValue) * parseFloat(bookPrice)).toFixed(2);
-        const currentTotal = parseFloat(elements.cartTotal.innerText.replace(/Total: \$/g, '')).toFixed(2);
-        elements.cartTotal.innerText = `Total: $${parseFloat(currentTotal - itemSum).toFixed(2)}`;
-        elements.openCart.innerText = `Cart (${numberInCart() - subValue})`;
-      });
+      removeFromCart();
     });
   };
 
@@ -198,4 +211,13 @@ document.addEventListener('DOMContentLoaded', function () {
       removeInput(button, section);
     });
   };
+
+  if (elements.removeCartItem().length > 0) {
+    let total = 0;
+    elements.bookCount.forEach(function (element) {
+      total += parseInt(element.value);;
+    });
+    elements.openCart.innerText = `(${total})`;
+    removeFromCart();
+  }
 });

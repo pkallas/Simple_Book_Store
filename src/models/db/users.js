@@ -46,16 +46,13 @@ const getCart = (userId) => {
   });
 };;
 
-const addOrUpdateCart = (userId, cart) => {
-  return db.query(`SELECT id FROM books WHERE id = $1`, [cart.bookId])
-  .then(bookId => {
-    return db.query(`DELETE FROM carts WHERE cart.user_id = $1 AND cart.book_id = $2
-      `, [userId, bookId])
-      .then(() => {
-        return db.query(`INSERT INTO carts (user_id, book_id, quantity)
-          VALUES ($1, $2, $3)
-          `, [userId, bookId, cart.quantity]);
-      });
+const addOrUpdateCart = (userCart) => {
+  return db.query(`DELETE FROM carts WHERE cart.user_id = $1 AND cart.book_id = $2
+    `, [userCart.userId, userCart.bookId])
+  .then(() => {
+    return db.query(`INSERT INTO carts (user_id, book_id, quantity)
+      VALUES ($1, $2, $3)
+      `, [userCart.userId, userCart.bookId, userCart.quantity]);
   })
   .catch(error => {
     throw error;
