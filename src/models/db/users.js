@@ -48,9 +48,13 @@ const getCart = (userId) => {
 const updateCart = (userId, cart) => {
   return db.query(`SELECT id FROM books WHERE title = $1`, [cart.title])
   .then(bookId => {
-    return db.query(`UPDATE cart SET quantity = $3
-      WHERE cart.user_id = $1 AND cart.book_id = $2
-      `, [userId, bookId, cart.quantity]);
+    return db.query(`DELETE FROM carts WHERE cart.user_id = $1 AND cart.book_id = $2
+      `, [userId, bookId])
+      .then(() => {
+        return db.query(`INSERT INTO carts (user_id, book_id, quantity)
+          VALUES ($1, $2, $3)
+          `, [userId, bookId, cart.quantity]);
+      });
   })
   .catch(error => {
     throw error;
