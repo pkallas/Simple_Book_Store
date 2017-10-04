@@ -136,9 +136,53 @@ ul {
 
 .book-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.book-list-item {
-  align-self: center;
+.book-list-image {
+  height: 20em;
+  width: auto;
+  border: 1px;
+  border-color: red;
+  border-style: solid;
+  padding: 1em;
+}
+
+/* Styling for the index page ends here */
+/* Styling for the nav-bar starts here */
+
+.nav-bar-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+#search-input {
+  width: 600px;
+  height: 25px;
+}
+
+.search-button {
+  -webkit-appearance: none;
+  cursor: pointer;
+  height: 30px;
+  width: 40px;
+  background-color: #ffad33;
+}
+
+.search-button-image {
+  position: relative;
+  right: 38px;
+  top: 2px;
+  height: 25px;
+  width: auto;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.search-button-container {
+  position: relative;
+  bottom: 30px;
+  left: 565px;
 }
