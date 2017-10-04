@@ -5,7 +5,7 @@
     <% books.forEach(function(book) {%>
       <li>
         <a href="/books/<%=book.id%>">
-          <img src=<%=book.img_url%>>
+          <img class="book-list-image" src=<%=book.img_url%>>
           <div id="search-title">
             <%=book.title%>
           </div>
