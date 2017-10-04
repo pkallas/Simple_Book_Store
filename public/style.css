@@ -225,3 +225,18 @@ ul {
   background-color: #ff9900;
   border-color: #ff9900;
 }
+
+/* Styling for the nav-bar ends here */
+/* Styling for the search page starts here */
+
+.book-info-container {
+  border-color: green;
+  border-style: solid;
+  height: 100px;
+  padding: 1em;
+  max-width: 200px;
+  min-width: 200px;
+}
+
+/* Styling for the search page ends here */
+/* Styling for the book page starts here */
