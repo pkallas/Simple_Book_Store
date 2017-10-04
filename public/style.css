@@ -5,6 +5,12 @@ body {
   max-height: 100vh;
 }
 
+#company-name-header {
+  display: flex;
+  justify-content: center;
+  font-family: 'Dancing Script', cursive, Tahoma, Geneva, sans-serif
+}
+
 /* Styling for the cart begins here */
 
 .modal-overlay {
@@ -180,7 +186,7 @@ ul {
 
 #search-input {
   position: relative;
-  left: 100px;
+  left: 150px;
   width: 600px;
   height: 25px;
 }
@@ -194,7 +200,7 @@ ul {
   border-color: #ffad33;
   position: relative;
   top: 5px;
-  left: 55px;
+  left: 105px;
 }
 
 .search-button:hover {
@@ -205,7 +211,7 @@ ul {
 .search-button-image {
   position: relative;
   top: 7px;
-  left: 20px;
+  left: 70px;
   height: 25px;
   width: auto;
   cursor: pointer;
@@ -219,6 +225,8 @@ ul {
   color: #ffffff;
   height: 35px;
   cursor: pointer;
+  position: relative;
+  left: 50px;
 }
 
 .open-cart:hover {
