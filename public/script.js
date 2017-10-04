@@ -44,15 +44,38 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const removeFromCart = function () {
-    let bookPrice = elements.bookPrice.innerText.replace(/Price: \$/g, '') || event.target.previousElementSibling.innerText.replace(/Price: \$/g, '');
+    let bookPrice;
+    if (elements.bookPrice) {
+      bookPrice = elements.bookPrice.innerText.replace(/Price: \$/g, '');
+    }
     elements.removeCartItem().forEach(function (element) {
-      element.addEventListener('click', function () {
-        event.target.parentElement.remove();
+      if (element.getAttribute('name') === 'hasClick') {
+        return;
+      };
+      element.setAttribute('name', 'hasClick');
+      element.addEventListener('click', function (event) {
+        bookPrice = element.previousElementSibling.innerText.replace(/\$/, '');
         const subValue = event.target.previousElementSibling.previousElementSibling.value;
-        const itemSum = (parseFloat(subValue) * parseFloat(bookPrice)).toFixed(2);
-        const currentTotal = parseFloat(elements.cartTotal.innerText.replace(/Total: \$/g, '')).toFixed(2);
-        elements.cartTotal.innerText = `Total: $${parseFloat(currentTotal - itemSum).toFixed(2)}`;
+        const itemSum = (parseFloat(subValue) * parseFloat(bookPrice));
+        const currentTotal = parseFloat(elements.cartTotal.innerText.replace(/Total: \$/g, ''));
+        elements.cartTotal.innerText = `Total: $${Math.round(parseFloat(currentTotal - itemSum)).toFixed(2)}`;
         elements.openCart.innerText = `Cart (${numberInCart() - subValue})`;
+        let currentBookId = event.target.previousElementSibling.previousElementSibling.id.replace(/book/, '');
+        fetch('/cart', {
+          method: 'delete',
+          body: JSON.stringify({ bookId: currentBookId }),
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(json => {
+          if (json.error) {
+            alert(json.error);
+          } else {
+            event.target.parentElement.remove();
+          }
+        })
+        .catch(error => console.error(error));
       });
     });
   };
@@ -71,6 +94,22 @@ document.addEventListener('DOMContentLoaded', function () {
           bookTotalCount += currentBookCount;
           let bookValue = parseFloat((bookPrice * currentBookCount)).toFixed(2);
           totalPrice += parseFloat(bookValue);
+          fetch('/cart', {
+            method: 'put',
+            body: JSON.stringify({
+              bookId: element.id.replace(/book/, ''),
+              quantity: currentBookCount,
+            }),
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+          })
+          .then(response => response.json())
+          .then(json => {
+            if (json.error) {
+              alert(json.error);
+            }
+          })
+          .catch(error => console.error(error));
         });
 
         elements.openCart.innerText = `Cart (${bookTotalCount})`;
@@ -95,15 +134,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
+  const updateFetch = function (bookId, quantity) {
+    fetch('/cart', {
+      method: 'put',
+      body: JSON.stringify({
+        bookId: bookId,
+        quantity: quantity,
+      }),
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json.error) {
+        alert(json.error);
+      }
+    })
+    .catch(error => console.error(error));
+  };
+
   if (elements.addToCart) {
     let bookId = window.location.pathname.replace(/\/books\//, 'book');
-    let bookPrice = elements.bookPrice.innerText.replace(/Price: \$/g, '');
     elements.addToCart.addEventListener('click', function () {
+      let bookPrice = parseFloat(elements.bookPrice.innerText.replace(/Price: \$/g, ''));
+      let currentTotal = parseFloat(elements.cartTotal.innerText.replace(/Total: \$/, ''));
       elements.openCart.innerText = `Cart (${numberInCart() + 1})`;
       if (document.querySelector(`#${bookId}`)) {
         let newBookCount = parseInt(document.querySelector(`#${bookId}`).value) + 1;
         document.querySelector(`#${bookId}`).value = newBookCount;
-        elements.cartTotal.innerText = `Total: $${parseFloat(bookPrice * newBookCount).toFixed(2)}`;
+        currentTotal += parseFloat(bookPrice);
+        elements.cartTotal.innerText = `Total: $${currentTotal.toFixed(2)}`;
+        updateFetch(bookId.replace(/book/, ''), newBookCount);
         return;
       };
       let listItem = document.createElement('li');
@@ -127,9 +188,11 @@ document.addEventListener('DOMContentLoaded', function () {
       listItem.appendChild(bookPriceSpan);
       listItem.appendChild(removeCartItem);
       elements.cartContents.appendChild(listItem);
-      elements.cartTotal.innerText = `Total: $${parseFloat(bookPrice)}`;
+      currentTotal += parseFloat(bookPrice * numberOfBook.value);
+      elements.cartTotal.innerText = `Total: $${currentTotal.toFixed(2)}`;
       calculateOpenCartTotal(elements.bookCount());
       removeFromCart();
+      updateFetch(bookId.replace(/book/, ''), numberOfBook.value);
     });
   };
 
@@ -226,8 +289,8 @@ document.addEventListener('DOMContentLoaded', function () {
       let bookAmount = parseInt(element.previousElementSibling.value);
       innerCartTotal += (bookPrice * bookAmount);
     });
-    elements.openCart.innerText = `(${outerCartTotal})`;
-    elements.cartTotal.innerText = `$${innerCartTotal.toFixed(2)}`;
+    elements.openCart.innerText = `Cart (${outerCartTotal})`;
+    elements.cartTotal.innerText = `Total: $${innerCartTotal.toFixed(2)}`;
     removeFromCart();
   }
 });

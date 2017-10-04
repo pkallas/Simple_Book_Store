@@ -47,7 +47,7 @@ const getCart = (userId) => {
 };;
 
 const addOrUpdateCart = (userCart) => {
-  return db.query(`DELETE FROM carts WHERE cart.user_id = $1 AND cart.book_id = $2
+  return db.query(`DELETE FROM carts WHERE carts.user_id = $1 AND carts.book_id = $2
     `, [userCart.userId, userCart.bookId])
   .then(() => {
     return db.query(`INSERT INTO carts (user_id, book_id, quantity)
@@ -60,7 +60,7 @@ const addOrUpdateCart = (userCart) => {
 };
 
 const removeFromCart = (userId, bookId) => {
-  return db.query(`DELETE FROM carts WHERE cart.user_id = $1 AND cart.book_id = $2
+  return db.query(`DELETE FROM carts WHERE carts.user_id = $1 AND carts.book_id = $2
     `, [userId, bookId])
   .catch(error => {
     throw error;
