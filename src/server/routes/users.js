@@ -96,12 +96,12 @@ router.get('/logout', (request, response) => {
   response.redirect('/');
 });
 
-router.delete('/cart', (request, respose) => {
+router.delete('/cart', (request, response) => {
   const userId = request.session.userId;
   const bookId = request.body.bookId;
-  users.removeCartItem(userId, bookId)
-  .then(result => response.send(`Cart Item ${bookId} has been deleted`))
-  .catch(error => response.send(`Cart Item ${bookId} could not be deleted`));
+  users.removeFromCart(userId, bookId)
+  .then(result => response.json({ message: `Cart Item ${bookId} has been deleted` }))
+  .catch(error => response.json({ error: `Cart Item ${bookId} could not be deleted` }));
 });
 
 router.put('/cart', (request, response) => {
@@ -111,8 +111,8 @@ router.put('/cart', (request, response) => {
     quantity: request.body.quantity,
   };
   users.addOrUpdateCart(userCart)
-  .then(result => response.send('Cart has been updated'))
-  .catch(error => response.send('Cart update went wrong'));
+  .then(result => response.json({ message: 'Item added to cart' }))
+  .catch(error => response.json({ error: 'Could not add item to cart' }));
 });
 
 module.exports = router;
