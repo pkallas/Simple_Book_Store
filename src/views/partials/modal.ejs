@@ -3,12 +3,12 @@
     <button type="button" class="close-cart">Close</button>
     <div class="modal-guts">
       <h1>Shopping Cart</h1>
-      <div class="modal-header-container">
-        <span class="modal-header" id="modal-header-title">Title</span>
-        <span class="modal-header" id="modal-header-quantity">Quantity</span>
-        <span class="modal-header" id="modal-header-price">Price</span>
-      </div>
       <ul class="cart-contents">
+        <li class="modal-header-container">
+          <span class="modal-header" id="modal-header-title">Title</span>
+          <span class="modal-header" id="modal-header-quantity">Quantity</span>
+          <span class="modal-header" id="modal-header-price">Price</span>
+        </li>
         <% if (cart) { %>
         <% cart.forEach(function(item) {%>
           <li class="item">
@@ -23,9 +23,12 @@
             <div class="remove-from-cart">
               &#10006
             </div>
+          </li>
         <% }) %>
       <% } %>
       </ul>
+      <div class="total-container">
+        <span class="total">Total: $0.00</span>
+      </div>
     </div>
-    <span class="total">Total: $0.00</span>
   </div>

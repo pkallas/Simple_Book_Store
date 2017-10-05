@@ -43,7 +43,7 @@ body {
   display: none;
   width: 800px;
   max-width: 100%;
-  height: 600px;
+  height: 500px;
   max-height: 100%;
   position: fixed;
   z-index: 100;
@@ -83,17 +83,14 @@ body {
   text-align: center;
 }
 
-.total {
-  position: fixed;
-  padding: 1em;
-  font-weight: bold;
-  font-size: 20px;
-  top: 85%;
-  right: 0.5%;
-}
-
 .modal-header {
   font-weight: bold;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .modal-header-container {
@@ -104,60 +101,52 @@ body {
 #modal-header-title {
   flex: 1;
   padding: 1em;
-  position: relative;
-  left: 145px;
 }
 
 #modal-header-quantity {
-  flex: 0;
+  flex: 0.5;
   padding: 1em;
-  position: relative;
-  right: 175px;
 }
 
 #modal-header-price {
-  flex: 0;
+  flex: 0.25;
   padding: 1em;
-  position: relative;
-  right: 90px;
-}
-
-.item {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  margin-right: 1em;
 }
 
 .book-title-span {
   flex: 1;
-  padding: 1em;
+  margin: 1em;
   font-weight: bold;
-  position: relative;
-  bottom: 13px;
 }
 
 .book-count {
-  flex: 0;
-  padding-right: 1em;
-  width: 30px;
-  height: 20px;
-  position: relative;
-  right: 225px;
+  flex: 0.5;
+  margin: 1em;
 }
 
 .book-price-span {
-  flex: 0;
-  padding-left: 1em;
-  position: relative;
-  right: 100px;
-  top: 3px;
+  flex: 0.25;
+  margin: 1em;
 }
 
 .remove-from-cart {
-  position: relative;
-  right: 20px;
   cursor: pointer;
-  top: 5px;
+  position: relative;
+  right: 10px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.total-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1em;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 /* Styling for the cart ends here */
