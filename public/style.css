@@ -1,16 +1,30 @@
-/* Styling on the body, to prevent the body from being larger than the window */
+/* This section contains styling applying to the body and comapny name header */
 
 body {
-  min-height: 100vh;
-  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+.company-name-header-container {
+  border-color: #4d004d;
+  background-color: #4d004d;
 }
 
 #company-name-header {
   display: flex;
   justify-content: center;
-  font-family: 'Dancing Script', cursive, Tahoma, Geneva, sans-serif
+  font-family: 'Dancing Script', cursive, Tahoma, Geneva, sans-serif;
+  font-size: 50px;
+  font-size-adjust: 0.58;
+  color: #ffffff;
 }
 
+/* Styling for the body and company name header ends here */
 /* Styling for the cart begins here */
 
 .modal-overlay {
@@ -189,6 +203,7 @@ ul {
   left: 150px;
   width: 600px;
   height: 25px;
+  border-color: #ffad33;
 }
 
 .search-button {
