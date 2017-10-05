@@ -20,20 +20,22 @@
         </div>
       </li>
     <% }) %>
-    <% offset = parseInt(offset) %>
-    <% if (offset >= 10) {%>
-      <% let previous = offset - 10 %>
-      <div id="search-prev-page"><a href="search?search=<%=searchTerm%>&amp;start=<%=previous%>">
-        Prev Page
+</ul>
+<div class="page-links">
+  <% offset = parseInt(offset) %>
+  <% if (offset >= 10) {%>
+    <% let previous = offset - 10 %>
+    <div id="search-prev-page"><a href="search?search=<%=searchTerm%>&amp;start=<%=previous%>">
+      Prev Page
       </a>
     </div>
-    <% } %>
-    <% offset += 10 %>
+  <% } %>
+  <% offset += 10 %>
     <div id="search-next-page"><a href="search?search=<%=searchTerm%>&amp;start=<%=offset%>">
       Next Page
     </a>
-  </div>
+    </div>
   <% } %>
-</ul>
+</div>
 
 <%- include ../partials/footer.ejs %>

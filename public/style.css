@@ -288,5 +288,75 @@ ul {
   min-width: 200px;
 }
 
+.page-links {
+  display: flex;
+  justify-content: center;
+}
+
+.page-links > div {
+  margin: 1em;
+}
+
 /* Styling for the search page ends here */
-/* Styling for the book page starts here */
+/* Styling for the single book page starts here */
+
+#single-book-main-info-container {
+  display: flex;
+}
+
+#single-book-image {
+  height: 400px;
+  width: auto;
+}
+
+#single-book-info {
+  padding: 1em;
+}
+
+#single-book-purchase-info {
+  padding: 1em;
+}
+
+#single-book-isbn-publisher {
+  padding: 1em;
+}
+
+.single-book-page-small-header{
+  border-color: #4d004d;
+  background-color: #4d004d;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 30px;
+  font-family: 'Dancing Script', cursive, Tahoma, Geneva, sans-serif;
+}
+
+#add-to-cart-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+}
+
+#add-to-cart-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+#single-book-edit-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  margin: 1em;
+}
+
+#single-book-edit-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+/* Styling for the single book page ends here */

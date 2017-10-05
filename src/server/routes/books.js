@@ -30,11 +30,17 @@ router.get('/books/create', (request, response) => {
   }
 });
 
-router.post('/books/create', (request, response, error) => {
+router.post('/books/create', (request, response, next) => {
   if (request.session.role === 'admin') {
+    let price;
+    if (request.body.price.includes('$')) {
+      price = request.body.price.replace(/\$/, '');
+    } else {
+      price = request.body.price;
+    }
     const compiledBook = {
       title: request.body.title,
-      price: request.body.price,
+      price: price,
       image: request.body.image,
       inStock: request.body.inStock,
       isbn: request.body.isbn,
@@ -67,7 +73,7 @@ router.post('/books/create', (request, response, error) => {
   }
 });
 
-router.get('/books/:id/edit', (request, response, error) => {
+router.get('/books/:id/edit', (request, response, next) => {
   if (request.session.role === 'clerk' || request.session.role === 'admin') {
     const id = request.params.id;
     books.getOneBook(id)
