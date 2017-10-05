@@ -3,7 +3,9 @@
 <ul class="book-list" id="homepage-books">
   <% if(books) {%>
     <% books.forEach(function(book) {%>
-      <li class="book-list-item"><a href="/books/<%=book.id%>"><img class="book-list-image" alt="No Image Available" src=<%=book.img_url%>></a></li>
+      <div class="book-list-item-container">
+        <li class="book-list-item"><a href="/books/<%=book.id%>"><img class="book-list-image" alt="No Image Available" src=<%=book.img_url%>></a></li>
+      </div>
     <% }) %>
   <% } %>
 </ul>
