@@ -1,6 +1,6 @@
 # Simple_Book_Store
 
-This project is based upon the Learner's Guild goal to create a simple book store.
+This project is based upon the Learners Guild goal to create a simple book store.
 
 ## Features
 - Can view the books in the store on the homepage.

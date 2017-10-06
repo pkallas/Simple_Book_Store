@@ -1,13 +1,12 @@
 <% include ../partials/header.ejs %>
 
-  <a href="/books/create"><button>Add a new book</button></a>
-
+<div class="admin-container">
   <h1>Change User Permissions</h1>
   <% if (message) {%>
     <div><%= message %></div>
   <% } %>
   <% if (errorMessage) {%>
-    <div><%= errorMessage %></div>
+    <div class="error"><%= errorMessage %></div>
   <% } %>
   <form method="POST" action="/admin/permissions?_method=PUT">
     <div>
@@ -15,12 +14,13 @@
     </div>
     <div>
       Role: <select name="role">
-        <option value="reader">reader</option>
-        <option value="clerk">clerk</option>
-        <option value="admin">admin</option>
+        <option value="reader">Reader</option>
+        <option value="clerk">Clerk</option>
+        <option value="admin">Admin</option>
       </select>
     </div>
-    <input type="submit" value="Edit Role">
+    <input id="edit-role-button" type="submit" value="Edit Role">
   </form>
+</div>
 
 <% include ../partials/footer.ejs %>

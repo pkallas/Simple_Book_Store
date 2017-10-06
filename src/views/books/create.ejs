@@ -2,10 +2,10 @@
 
   <div class="create-book-container">
     <% if (message) {%>
-      <div><%=message.invalidImage%></div>
+      <div class="error" id="create-book-error"><%=message.invalidImage%></div>
       <% } %>
-    <h1>Create Book</h1>
     <form method="post" action="/books/create">
+      <h1 id="create-book-header">Create Book</h1>
       <div>
         <span>Title: </span>
           <input name="title" required>
@@ -35,15 +35,16 @@
           First Name: <input name="firstName0" required>
           Last Name: <input name="lastName0" required>
         </div>
-        <button type="button" id="add-author-input">Add Author</button>
+        <button class="create-book-page-button" type="button" id="add-author-input">Add Author</button>
       <h1>Genres</h1>
         <div class="genre-input">
         <input name="genre0" required>
         </div>
-        <button type="button" id="add-genre-input">Add Genre</button>
+        <button class="create-book-page-button" type="button" id="add-genre-input">Add Genre</button>
        <div>
-         <input type="submit" value="Create Book">
+         <input class="create-book-page-button" type="submit" value="Create Book">
        </div>
       </form>
     </div>
+
 <% include ../partials/footer.ejs %>

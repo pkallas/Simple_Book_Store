@@ -1,10 +1,12 @@
 <% include ../partials/header.ejs %>
 
+<div class="signup-container">
   <% if (errorMessage) {%>
     <div class="error">
       <%= errorMessage %>
     </div>
   <% } %>
+  <h1>Sign Up</h1>
   <form method="post" action="/signup">
     <div>
       Username: <input name="username" required>
@@ -18,7 +20,8 @@
     <div>
       Password Confirmation: <input type="password" name="confirmPassword" required>
     </div>
-    <input type="submit" value="Sign Up">
+    <input class="signup-button" type="submit" value="Sign Up">
   </form>
+</div>
 
 <% include ../partials/footer.ejs %>

@@ -10,6 +10,11 @@ body {
   background: transparent;
 }
 
+.error {
+  font-weight: bold;
+  color: red;
+}
+
 .company-name-header-container {
   border-color: #4d004d;
   background-color: #4d004d;
@@ -166,9 +171,6 @@ ul {
 }
 
 .book-list-item-container {
-  border: 1px;
-  border-color: red;
-  border-style: solid;
   height: 20em;
   width: 15em;
 }
@@ -176,9 +178,6 @@ ul {
 .book-list-image {
   height: 15em;
   width: auto;
-  border: 1px;
-  border-color: blue;
-  border-style: solid;
 }
 
 .book-list-item {
@@ -281,8 +280,6 @@ ul {
 /* Styling for the search page starts here */
 
 .book-info-container {
-  border-color: green;
-  border-style: solid;
   height: 100px;
   max-width: 200px;
   min-width: 200px;
@@ -364,7 +361,153 @@ ul {
 
 .create-book-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.create-book-page-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  margin: 1em;
+}
+
+.create-book-page-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
 }
 
 /* Styling for the create book page ends here */
+/* Styling for the admin page starts here */
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#edit-role-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  margin: 1em;
+}
+
+#edit-role-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+/* Styling for the admin page ends here */
+/* Styling for the sign up starts here */
+
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.signup-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  margin: 1em;
+}
+
+.signup-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+/* Styling for the sign up ends here */
+/* Styling for the login starts here */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.login-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  margin: 1em;
+}
+
+.login-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+/* Styling for the login ends here */
+/* Styling for the edit page starts here */
+
+.edit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-page-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  margin: 1em;
+}
+
+.edit-page-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+#delete-book {
+  -webkit-appearance: none;
+  background-color: #ff3333;
+  border-color: #ff0000;
+  color: white;
+  height: 25px;
+  cursor: pointer;
+  margin-top: 1em;
+}
+
+#delete-book:hover {
+  background-color: #ee2222;
+  border-color: #ee2222;
+}
+
+/* Styling for the edit page ends here */
+/* Styling for the error page starts here */
+
+.error-page-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.error-image {
+  height: 700px;
+  width: auto;
+}
+
+/* Styling for the error page ends here */
