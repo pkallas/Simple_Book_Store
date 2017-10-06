@@ -39,11 +39,13 @@ router.get('/books/:id', (request, response, next) => {
 
 router.post('/books/create', (request, response, next) => {
   if (request.session.role === 'admin') {
-    if (!request.body.image.startsWith('http') && !(request.body.image.endsWith('.jpg') || request.body.image.endsWith('.png'))) {
+    let imageUrl = request.body.image;
+    if (!imageUrl.startsWith('http') && !(imageUrl.endsWith('.jpg') || imageUrl.endsWith('.png'))) {
       let message = {
         invalidImage: 'Please input a valid image',
       };
       response.render('books/create', { message });
+      return;
     };
     let price;
     if (request.body.price.includes('$')) {
@@ -54,7 +56,7 @@ router.post('/books/create', (request, response, next) => {
     const compiledBook = {
       title: request.body.title,
       price: price,
-      image: request.body.image,
+      image: imageUrl,
       inStock: request.body.inStock,
       isbn: request.body.isbn,
       publisher: request.body.publisher,

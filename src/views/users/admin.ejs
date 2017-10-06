@@ -7,7 +7,7 @@
     <div><%= message %></div>
   <% } %>
   <% if (errorMessage) {%>
-    <div><%= errorMessage %></div>
+    <div class="error"><%= errorMessage %></div>
   <% } %>
   <form method="POST" action="/admin/permissions?_method=PUT">
     <div>

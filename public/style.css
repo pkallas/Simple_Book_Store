@@ -367,4 +367,8 @@ ul {
   justify-content: center;
 }
 
+.error {
+  font-weight: bold;
+}
+
 /* Styling for the create book page ends here */

@@ -2,7 +2,7 @@
 
   <div class="create-book-container">
     <% if (message) {%>
-      <div><%=message.invalidImage%></div>
+      <div class="error"><%=message.invalidImage%></div>
       <% } %>
     <h1>Create Book</h1>
     <form method="post" action="/books/create">
