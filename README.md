@@ -16,6 +16,10 @@ This project is based upon the Learners Guild goal to create a simple book store
 - An **admin** has the same abilities as a clerk, but can also create books, delete books, and change a user's role.
 - Users can leave the page, come back, and still have the same items in their cart.
 
+## Usage
+- Go to: https://learners-guild-book-store.herokuapp.com/
+- Register an account to have a persistent cart!
+
 ## Local Installation & Usage
 - Fork or clone the repository.
 - Have Node and Postgres installed
