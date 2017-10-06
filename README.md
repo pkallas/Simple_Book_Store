@@ -17,6 +17,7 @@ This project is based upon the Learners Guild goal to create a simple book store
 
 ## Local Installation & Usage
 - Fork or clone the repository.
+- Have node and Postgres installed.
 - Run the command "npm install" in your terminal.
 - Run the command "npm run db-init" in your terminal to create the database.
 - Run the command "npm start" in your terminal to start the server.
