@@ -1,5 +1,9 @@
 <%- include ../partials/header.ejs %>
+
   <div class="create-book-container">
+    <% if (message) {%>
+      <div><%=message.invalidImage%></div>
+      <% } %>
     <h1>Create Book</h1>
     <form method="post" action="/books/create">
       <div>
