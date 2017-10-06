@@ -1,6 +1,7 @@
 <% include ../partials/header.ejs %>
 
   <% if (book) {%>
+    <div class="edit-container">
       <img  id="edit-book-image" src=<%=book.img_url%>>
       <form id="edit-book-form" method="POST" action="/books/<%=book.id%>/edit?_method=PUT">
         <div>
@@ -31,7 +32,7 @@
           <button id="button-author<%=index%>" type="button" class="remove-input">X</button>
         </div>
       <% }) %>
-      <button type="button" id="add-author-input">Add Another Author</button>
+      <button class="edit-page-button" type="button" id="add-author-input">Add Another Author</button>
         <div>
           Genres
         </div>
@@ -41,14 +42,14 @@
             <button id="button-genre<%=index%>" type="button" class="remove-input">X</button>
           </div>
         <% }) %>
-        <button type="button" id="add-genre-input">Add Another Genre</button>
+        <button class="edit-page-button" type="button" id="add-genre-input">Add Another Genre</button>
         <div>
-        <input class="edit" type="submit" value="Edit">
+        <input class="edit-page-button" type="submit" value="Edit">
       </div>
       </form>
         <% if (role === 'admin') {%>
           <div>
-          <button data-id="<%=book.id%>" id="delete-button">Delete</button>
+          <button class="edit-page-button" data-id="<%=book.id%>" id="delete-book">Delete</button>
         </div>
         <% } %>
       <datalist id="genres">
@@ -56,6 +57,7 @@
           <option value="<%=genre.name%>">
             <% }) %>
       </datalist>
+    </div>
   <% } %>
 
 <% include ../partials/footer.ejs %>
