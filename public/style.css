@@ -497,3 +497,17 @@ ul {
 }
 
 /* Styling for the edit page ends here */
+/* Styling for the error page starts here */
+
+.error-page-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.error-image {
+  height: 700px;
+  width: auto;
+}
+
+/* Styling for the error page ends here */
