@@ -19,6 +19,7 @@ This project is based upon the Learners Guild goal to create a simple book store
 ## Usage
 - Go to: https://learners-guild-book-store.herokuapp.com/
 - Register an account to have a persistent cart!
+- Request to be a clerk or an admin to have access to more features!
 
 ## Local Installation & Usage
 - Fork or clone the repository.
