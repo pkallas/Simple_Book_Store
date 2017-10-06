@@ -10,6 +10,11 @@ body {
   background: transparent;
 }
 
+.error {
+  font-weight: bold;
+  color: red;
+}
+
 .company-name-header-container {
   border-color: #4d004d;
   background-color: #4d004d;
@@ -364,11 +369,34 @@ ul {
 
 .create-book-container {
   display: flex;
-  justify-content: center;
-}
-
-.error {
-  font-weight: bold;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 /* Styling for the create book page ends here */
+/* Styling for the admin page starts here */
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#edit-role-button {
+  -webkit-appearance: none;
+  background-color: #ffad33;
+  border-color: #ffad33;
+  color: #ffffff;
+  height: 35px;
+  cursor: pointer;
+  margin: 1em;
+}
+
+#edit-role-button:hover {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+/* Styling for the admin page ends here */
