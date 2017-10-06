@@ -30,11 +30,30 @@ router.get('/books/create', (request, response) => {
   }
 });
 
-router.post('/books/create', (request, response, error) => {
+router.get('/books/:id', (request, response, next) => {
+  const id = request.params.id;
+  books.getOneBook(id)
+  .then(book => response.render('books/book', { book }))
+  .catch(error => next(error));
+});
+
+router.post('/books/create', (request, response, next) => {
   if (request.session.role === 'admin') {
+    if (!request.body.image.startsWith('http') && !(request.body.image.endsWith('.jpg') || request.body.image.endsWith('.png'))) {
+      let message = {
+        invalidImage: 'Please input a valid image',
+      };
+      response.render('books/create', { message });
+    };
+    let price;
+    if (request.body.price.includes('$')) {
+      price = request.body.price.replace(/\$/, '');
+    } else {
+      price = request.body.price;
+    }
     const compiledBook = {
       title: request.body.title,
-      price: request.body.price,
+      price: price,
       image: request.body.image,
       inStock: request.body.inStock,
       isbn: request.body.isbn,
@@ -67,7 +86,7 @@ router.post('/books/create', (request, response, error) => {
   }
 });
 
-router.get('/books/:id/edit', (request, response, error) => {
+router.get('/books/:id/edit', (request, response, next) => {
   if (request.session.role === 'clerk' || request.session.role === 'admin') {
     const id = request.params.id;
     books.getOneBook(id)
@@ -114,13 +133,6 @@ router.put('/books/:id/edit', (request, response, next) => {
   } else {
     response.status(401).render('common/not_permitted');
   }
-});
-
-router.get('/books/:id', (request, response, next) => {
-  const id = request.params.id;
-  books.getOneBook(id)
-  .then(book => response.render('books/book', { book }))
-  .catch(error => next(error));
 });
 
 router.delete('/books/:id/', (request, response, next) => {

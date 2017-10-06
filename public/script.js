@@ -175,9 +175,9 @@ document.addEventListener('DOMContentLoaded', function () {
       let bookPriceSpan = document.createElement('span');
       bookPriceSpan.className = 'book-price-span';
       bookPriceSpan.innerText = `$${bookPrice}`;
-      let removeCartItem = document.createElement('button');
+      let removeCartItem = document.createElement('div');
       removeCartItem.className = 'remove-from-cart';
-      removeCartItem.innerText = 'X';
+      removeCartItem.innerHTML = '&#10006';
       let numberOfBook = document.createElement('input');
       numberOfBook.className = 'book-count';
       numberOfBook.type = 'number';

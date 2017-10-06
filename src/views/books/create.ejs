@@ -1,24 +1,34 @@
 <%- include ../partials/header.ejs %>
 
+  <div class="create-book-container">
+    <% if (message) {%>
+      <div><%=message.invalidImage%></div>
+      <% } %>
     <h1>Create Book</h1>
     <form method="post" action="/books/create">
       <div>
-        Title: <input name="title" required>
+        <span>Title: </span>
+          <input name="title" required>
       </div>
       <div>
-        Price: <input name="price" required>
+        <span>Price: </span>
+          <input name="price" required>
       </div>
       <div>
-        Image Link: <input name="image" required>
+        <span>Image Link: </span>
+          <input name="image" required>
       </div>
       <div>
-        Number in Stock: <input name="inStock" required>
+        <span>Number in Stock: </span>
+          <input name="inStock" required>
       </div>
       <div>
-        ISBN: <input name="isbn" required>
+        <span>ISBN: </span>
+          <input name="isbn" required>
       </div>
       <div>
-        Publisher: <input name="publisher" required>
+        <span>Publisher: </span>
+          <input name="publisher" required>
       </div>
       <h1>Authors</h1>
         <div class="author-input">
@@ -35,5 +45,5 @@
          <input type="submit" value="Create Book">
        </div>
       </form>
-
+    </div>
 <% include ../partials/footer.ejs %>
