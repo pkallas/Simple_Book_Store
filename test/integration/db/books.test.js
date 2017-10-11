@@ -122,5 +122,16 @@ context('Books Database functions', function () {
     // });
   });
 
-  
+  describe('getAllGenres', function () {
+    it('Should return all genres', function () {
+      return books.getAllGenres()
+      .then(allGenres => {
+        expect(allGenres).to.eql([
+          { "name": "alternate history" },
+          { "name": "fiction" },
+          { "name": "fantasy" },
+        ]);
+      });
+    });
+  });
 });
