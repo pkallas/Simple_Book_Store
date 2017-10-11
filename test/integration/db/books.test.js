@@ -21,16 +21,17 @@ beforeEach(() => {
 });
 
 context('Books Database functions', function () {
-  beforeEach(() => {
-    return db.seedBooks()
-    .then(() => db.seedAuthors())
-    .then(() => db.seedGenres())
-    .then(() => db.seedAuthorsBooks())
-    .then(() => db.seedGenresBooks())
-    .then(() => console.log('Test database seeded'));
-  });
-
   describe('getOneBook', function () {
+
+    beforeEach(() => {
+      return db.seedBooks()
+      .then(() => db.seedAuthors())
+      .then(() => db.seedGenres())
+      .then(() => db.seedAuthorsBooks())
+      .then(() => db.seedGenresBooks())
+      .then(() => console.log('Test database seeded'));
+    });
+
     it('Should get all the information of one book', function () {
       return books.getOneBook(1)
       .then(book => {
@@ -62,6 +63,33 @@ context('Books Database functions', function () {
           authors: [{ id: 2, first_name: 'J. K.', last_name: 'Rowling' }],
           genres: ['fantasy', 'fiction'],
         });
+      });
+    });
+  });
+
+  describe('searchForBooks', function () {
+
+    beforeEach(() => {
+      return db.seedBooks()
+      .then(() => db.seedAuthors())
+      .then(() => db.seedGenres())
+      .then(() => db.seedAuthorsBooks())
+      .then(() => db.seedGenresBooks())
+      .then(() => console.log('Test database seeded'));
+    });
+
+    it('Should return up to 10 matching books', function () {
+      return books.searchForBooks('harry', 0)
+      .then(foundBooks => {
+        console.log(foundBooks);
+        expect(foundBooks).to.eql([{
+          id: 1,
+          title: 'How Few Remain',
+          price: '4.54',
+          img_url: 'How Few Remain Image',
+          first_name: 'Harry',
+          last_name: 'Turtledove', },
+        ]);
       });
     });
   });
