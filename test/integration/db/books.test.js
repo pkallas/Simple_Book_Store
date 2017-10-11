@@ -20,17 +20,17 @@ beforeEach(() => {
   .then(() => console.log('Genres table from simple_book_store_test has been truncated'));
 });
 
+beforeEach(() => {
+  return db.seedBooks()
+  .then(() => db.seedAuthors())
+  .then(() => db.seedGenres())
+  .then(() => db.seedAuthorsBooks())
+  .then(() => db.seedGenresBooks())
+  .then(() => console.log('Test database seeded'));
+});
+
 context('Books Database functions', function () {
   describe('getOneBook', function () {
-
-    beforeEach(() => {
-      return db.seedBooks()
-      .then(() => db.seedAuthors())
-      .then(() => db.seedGenres())
-      .then(() => db.seedAuthorsBooks())
-      .then(() => db.seedGenresBooks())
-      .then(() => console.log('Test database seeded'));
-    });
 
     it('Should get all the information of one book', function () {
       return books.getOneBook(1)
@@ -47,6 +47,10 @@ context('Books Database functions', function () {
           genres: ['alternate history', 'fiction'],
         });
       });
+    });
+
+    it('Should throw an error if not given an integer', function () {
+      return expect(books.getOneBook('Patrick')).to.eventually.be.rejected;
     });
 
     it('Should get all the information of one book', function () {
@@ -69,19 +73,9 @@ context('Books Database functions', function () {
 
   describe('searchForBooks', function () {
 
-    beforeEach(() => {
-      return db.seedBooks()
-      .then(() => db.seedAuthors())
-      .then(() => db.seedGenres())
-      .then(() => db.seedAuthorsBooks())
-      .then(() => db.seedGenresBooks())
-      .then(() => console.log('Test database seeded'));
-    });
-
     it('Should return up to 10 matching books', function () {
       return books.searchForBooks('harry', 0)
       .then(foundBooks => {
-        console.log(foundBooks);
         expect(foundBooks).to.eql([{
           id: 1,
           title: 'How Few Remain',
@@ -93,4 +87,40 @@ context('Books Database functions', function () {
       });
     });
   });
+
+  describe('updateBook', function () {
+
+    it('Should update a book with the given id', function () {
+      let book = {
+        id: 1,
+        title: 'Updated Title',
+        image: 'Updated Image',
+        price: '3.23',
+        inStock: 0,
+        isbn: 'Updated isbn',
+        publisher: 'Updated publisher',
+      };
+      return books.updateBook(book)
+      .then((updatedBook) => books.getOneBook(1))
+      .then(book => {
+        expect(book).to.eql({
+          id: 1,
+          title: 'Updated Title',
+          price: '3.23',
+          img_url: 'Updated Image',
+          in_stock: 0,
+          isbn: 'Updated isbn',
+          publisher: 'Updated publisher',
+          authors: [{ id: 1, first_name: 'Harry', last_name: 'Turtledove' }],
+          genres: ['alternate history', 'fiction'],
+        });
+      });
+    });
+
+    // it('Should update nothing when not given a book object', function () {
+    //   return books.updateBook('Patrick')
+    // });
+  });
+
+  
 });
