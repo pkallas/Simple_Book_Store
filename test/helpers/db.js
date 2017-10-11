@@ -1,5 +1,5 @@
 process.env.DATABASE_URL = 'postgres://localhost:5432/simple_book_store_test';
-const db = require('../src/models/db/db');
+const db = require('../../src/models/db/db');
 
 const truncateBooks = () => {
   return db.query(`TRUNCATE books RESTART IDENTITY CASCADE`);
