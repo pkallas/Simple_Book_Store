@@ -116,13 +116,10 @@ context('Books Database functions', function () {
         });
       });
     });
-
-    // it('Should update nothing when not given a book object', function () {
-    //   return books.updateBook('Patrick')
-    // });
   });
 
   describe('getAllGenres', function () {
+
     it('Should return all genres', function () {
       return books.getAllGenres()
       .then(allGenres => {
@@ -136,15 +133,40 @@ context('Books Database functions', function () {
   });
 
   describe('deleteBook', function () {
+
     it('Should delete the book with the given id', function () {
       let allBooksLength = 0;
       return books.getAllBooks()
       .then(allBooks => {
         allBooksLength = allBooks.length;
         return books.deleteBook(1)
-        .then(() => books.getAllBooks)
-        .then(allBooks => {
-          expect(allBooks.length).to.eql(allBooksLength - 1);
+        .then(() => books.getAllBooks())
+        .then(newAllBooks => {
+          expect(newAllBooks.length).to.eql(allBooksLength - 1);
+        });
+      });
+    });
+  });
+
+  describe('createBook', function () {
+
+    it('Should add a new book to the database', function () {
+      let allBooksLength = 0;
+      let book = {
+        title: 'New Book',
+        price: 9.87,
+        image: 'New Book Image',
+        isbn: '767665',
+        inStock: 5,
+        publisher: 'New Publisher',
+      };
+      return books.getAllBooks()
+      .then(allBooks => {
+        allBooksLength = allBooks.length;
+        return books.createBook(book)
+        .then(() => books.getAllBooks())
+        .then(newAllBooks => {
+          expect(newAllBooks.length).to.eql(allBooksLength + 1);
         });
       });
     });
