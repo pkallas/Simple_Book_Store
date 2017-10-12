@@ -146,6 +146,10 @@ context('Books Database functions', function () {
         });
       });
     });
+
+    it('Should throw an error if not given an integer', function () {
+      return expect(books.deleteBook('NaN')).to.eventually.be.rejected;
+    });
   });
 
   describe('createBook', function () {
@@ -216,6 +220,11 @@ context('Books Database functions', function () {
         });
       });
     });
+
+
+    it('Should throw an error if not given a book id', function () {
+      return expect(books.addOrEditAuthors('NaN', { key: 'Will Fail' })).to.eventually.be.rejected;
+    });
   });
 
   describe('addOrEditGenres', function () {
@@ -256,6 +265,11 @@ context('Books Database functions', function () {
           genres: ['another new genre', 'fantasy', 'fiction', 'some new genre'],
         });
       });
+    });
+
+
+    it('Should throw an error if not given a book id', function () {
+      return expect(books.addOrEditGenres('NaN', ['Will Fail'])).to.eventually.be.rejected;
     });
   });
 });
