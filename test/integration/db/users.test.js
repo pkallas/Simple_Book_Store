@@ -103,4 +103,31 @@ context('Users database functions', function () {
       });
     });
   });
+
+  describe('getByLogin', function () {
+
+    it('Should return a user when given a username', function () {
+      let user = {
+        login: 'bob',
+      };
+      return users.getByLogin(user)
+      .then(user => {
+        expect(user.id).to.eql(1);
+        expect(user.username).to.eql('bob');
+        expect(user.email).to.eql('bob@bob.com');
+      });
+    });
+
+    it('Should return a user when given an email', function () {
+      let user = {
+        login: 'jim@jim.com',
+      };
+      return users.getByLogin(user)
+      .then(user => {
+        expect(user.id).to.eql(2);
+        expect(user.username).to.eql('jim');
+        expect(user.email).to.eql('jim@jim.com');
+      });
+    });
+  });
 });
