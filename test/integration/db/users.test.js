@@ -130,4 +130,31 @@ context('Users database functions', function () {
       });
     });
   });
+
+  describe('isValidPassword', function () {
+
+    it('Should return true when the plaintextPassword and encryptedPassword match', function () {
+      let user = {
+        login: 'jim@jim.com',
+      };
+      return users.getByLogin(user)
+      .then(user => user.password)
+      .then(encryptedPassword => users.isValidPassword('worsepassword', encryptedPassword))
+      .then(result => {
+        expect(result).to.be.true;
+      });
+    });
+
+    it('Should return false when the plaintextPassword and encryptedPassword do not match', function () {
+      let user = {
+        login: 'jim@jim.com',
+      };
+      return users.getByLogin(user)
+      .then(user => user.password)
+      .then(encryptedPassword => users.isValidPassword('badpassword', encryptedPassword))
+      .then(result => {
+        expect(result).to.be.false;
+      });
+    });
+  });
 });
