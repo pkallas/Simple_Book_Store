@@ -1,5 +1,6 @@
 process.env.DATABASE_URL = 'postgres://localhost:5432/simple_book_store_test';
 const db = require('../../src/models/db/db');
+const bcrypt = require('bcrypt');
 
 const truncateBooks = () => {
   return db.query(`TRUNCATE books RESTART IDENTITY CASCADE`);
@@ -11,6 +12,14 @@ const truncateAuthors = () => {
 
 const truncateGenres = () => {
   return db.query(`TRUNCATE genres RESTART IDENTITY CASCADE`);
+};
+
+const truncateUsers = () => {
+  return db.query(`TRUNCATE users RESTART IDENTITY CASCADE`);
+};
+
+const truncateCarts = () => {
+  return db.query(`TRUNCATE carts RESTART IDENTITY CASCADE`);
 };
 
 const seedBooks = () => {
@@ -38,7 +47,20 @@ const seedAuthorsBooks = () => {
 const seedGenresBooks = () => {
   return db.query(`INSERT INTO genres_books (genre_id, book_id)
   VALUES (1, 1), (2, 1), (2, 2), (3, 2), (2, 3), (3, 3)`);
-}
+};
+
+const seedUsers = (plaintextPassword, user) => {
+  return bcrypt.hash(plaintextPassword, 10)
+  .then(hashedPassword => {
+    return db.query(`INSERT INTO users (username, email, password)
+    VALUES ($1, $2, $3)`, [user.username, user.email, hashedPassword]);
+  });
+};
+
+const seedCarts = (userId, bookId, quantity) => {
+  return db.query(`INSERT INTO carts (user_id, book_id, quantity)
+  VALUES ($1, $2, $3)`, [userId, bookId, 4]);
+};
 
 module.exports = {
   db,
@@ -50,4 +72,8 @@ module.exports = {
   seedGenres,
   seedAuthorsBooks,
   seedGenresBooks,
+  truncateUsers,
+  truncateCarts,
+  seedUsers,
+  seedCarts,
 };
