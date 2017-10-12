@@ -146,6 +146,10 @@ context('Books Database functions', function () {
         });
       });
     });
+
+    it('Should throw an error if not given an integer', function () {
+      return expect(books.deleteBook('NaN')).to.eventually.be.rejected;
+    });
   });
 
   describe('createBook', function () {
@@ -215,6 +219,57 @@ context('Books Database functions', function () {
           genres: ['alternate history', 'fiction'],
         });
       });
+    });
+
+
+    it('Should throw an error if not given a book id', function () {
+      return expect(books.addOrEditAuthors('NaN', { key: 'Will Fail' })).to.eventually.be.rejected;
+    });
+  });
+
+  describe('addOrEditGenres', function () {
+
+    it('Should update all the genres of a given book', function () {
+      let genres = ['fiction', 'fantasy'];
+      return books.addOrEditGenres(1, genres)
+      .then(() => books.getOneBook(1))
+      .then(book => {
+        expect(book).to.eql({
+          id: 1,
+          title: 'How Few Remain',
+          price: '4.54',
+          img_url: 'How Few Remain Image',
+          in_stock: 5,
+          isbn: '8487582',
+          publisher: 'Del Rey',
+          authors: [{ id: 1, first_name: 'Harry', last_name: 'Turtledove' }],
+          genres: ['fantasy', 'fiction'],
+        });
+      });
+    });
+
+    it('Should allow a user to add new genres to the database', function () {
+      let genres = ['fiction', 'fantasy', 'some new genre', 'another new genre'];
+      return books.addOrEditGenres(1, genres)
+      .then(() => books.getOneBook(1))
+      .then(book => {
+        expect(book).to.eql({
+          id: 1,
+          title: 'How Few Remain',
+          price: '4.54',
+          img_url: 'How Few Remain Image',
+          in_stock: 5,
+          isbn: '8487582',
+          publisher: 'Del Rey',
+          authors: [{ id: 1, first_name: 'Harry', last_name: 'Turtledove' }],
+          genres: ['another new genre', 'fantasy', 'fiction', 'some new genre'],
+        });
+      });
+    });
+
+
+    it('Should throw an error if not given a book id', function () {
+      return expect(books.addOrEditGenres('NaN', ['Will Fail'])).to.eventually.be.rejected;
     });
   });
 });
