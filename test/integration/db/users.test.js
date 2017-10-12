@@ -176,4 +176,33 @@ context('Users database functions', function () {
       return expect(users.getCart('bob')).to.eventually.be.rejected;
     });
   });
+
+  describe('addOrUpdateCart', function () {
+
+    it('Should add items to a users cart', function () {
+      let newUserCart = {
+        userId: 1,
+        bookId: 2,
+        quantity: 5,
+      };
+      return users.addOrUpdateCart(newUserCart)
+      .then(updatedCart => users.getCart(1))
+      .then(userCart => {
+        expect(userCart).to.eql([{ id: 1, title: 'How Few Remain', price: '4.54', quantity: 4 },
+        { id: 2, title: 'Harry Potter', price: '7.99', quantity: 5, }]);
+      });
+    });
+  });
+
+  describe('removeFromCart', function () {
+
+    it('Should remove an item from a users cart', function () {
+      return users.removeFromCart(1, 1)
+      .then(() => users.getCart(1))
+      .then(userCart => {
+        expect(userCart).to.have.lengthOf(0);
+        expect(userCart).to.eql([]);
+      });
+    });
+  });
 });
