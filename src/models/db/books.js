@@ -1,16 +1,16 @@
 const db = require('./db');
 
-const getAllBooks = () => {
+const getAll = () => {
   return db.query(`SELECT * FROM books`)
   .catch(error => {throw error});
 };
 
-const getAllBookImagesId = () => {
+const getAllImagesId = () => {
   return db.query(`SELECT id, img_url FROM books`)
   .catch(error => {throw error});
 };
 
-const getOneBook = bookID => {
+const getOne = bookID => {
   return db.query(`SELECT books.id, title, price, img_url, in_stock, isbn, publisher,
   json_agg(DISTINCT authors) AS authors,
   array_agg(DISTINCT genres.name) AS genres FROM books
@@ -26,7 +26,7 @@ const getOneBook = bookID => {
   .catch(error => {throw error});
 };
 
-const searchForBooks = (searchQuery, offSet) => {
+const search = (searchQuery, offSet) => {
   return db.query(`SELECT books.id, title, price, img_url, first_name, last_name FROM books
     JOIN authors_books ON books.id = authors_books.book_id
     JOIN authors ON authors.id = authors_books.author_id
@@ -41,7 +41,7 @@ const searchForBooks = (searchQuery, offSet) => {
     .catch(error => {throw error});
 };
 
-const updateBook = (book) => {
+const update = (book) => {
   return db.query(`
     UPDATE books SET title = $2, img_url = $3, price = $4,
     in_stock = $5, isbn = $6, publisher = $7
@@ -60,7 +60,7 @@ const deleteBook = (bookId) => {
   .catch(error => {throw error});
 };
 
-const createBook = (book) => {
+const create = (book) => {
   return db.query(`INSERT INTO books (title, price, img_url, in_stock, isbn, publisher)
   VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
   `, [book.title, book.price, book.image, book.inStock, book.isbn, book.publisher])
@@ -146,14 +146,14 @@ const addOrEditGenres = (bookId, genres) => {
 };
 
 module.exports = {
-  getAllBooks,
-  getOneBook,
-  getAllBookImagesId,
-  searchForBooks,
-  updateBook,
+  getAll,
+  getOne,
+  getAllImagesId,
+  search,
+  update,
   getAllGenres,
   deleteBook,
-  createBook,
+  create,
   addOrEditAuthors,
   addOrEditGenres,
 };

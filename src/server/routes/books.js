@@ -15,7 +15,7 @@ router.get('/books/search', (request, response, next) => {
     offset = 0;
   }
 
-  books.searchForBooks(searchTerm, offset)
+  books.search(searchTerm, offset)
     .then(books => {
       response.render('books/search', { books, offset, searchTerm: request.query.search });
     })
@@ -32,7 +32,7 @@ router.get('/books/create', (request, response) => {
 
 router.get('/books/:id', (request, response, next) => {
   const id = request.params.id;
-  books.getOneBook(id)
+  books.getOne(id)
   .then(book => response.render('books/book', { book }))
   .catch(error => next(error));
 });
@@ -76,7 +76,7 @@ router.post('/books/create', (request, response, next) => {
       genres.push(request.body['genre' + j]);
       j++;
     };
-    books.createBook(compiledBook)
+    books.create(compiledBook)
       .then(book => {
         books.addOrEditAuthors(book[0].id, authors)
         .then(() => books.addOrEditGenres(book[0].id, genres))
@@ -91,7 +91,7 @@ router.post('/books/create', (request, response, next) => {
 router.get('/books/:id/edit', (request, response, next) => {
   if (request.session.role === 'clerk' || request.session.role === 'admin') {
     const id = request.params.id;
-    books.getOneBook(id)
+    books.getOne(id)
     .then(book => {
       return books.getAllGenres().then(allGenres => response.render('books/edit', { book, allGenres }));
     })
@@ -127,7 +127,7 @@ router.put('/books/:id/edit', (request, response, next) => {
       genres.push(request.body['genre' + j]);
       j++;
     };
-    books.updateBook(compiledBook)
+    books.update(compiledBook)
     .then(() => books.addOrEditAuthors(compiledBook.id, authors))
     .then(() => books.addOrEditGenres(compiledBook.id, genres))
     .then(() => response.redirect(`/books/${compiledBook.id}`))
