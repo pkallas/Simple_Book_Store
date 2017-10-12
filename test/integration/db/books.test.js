@@ -124,9 +124,9 @@ context('Books Database functions', function () {
       return books.getAllGenres()
       .then(allGenres => {
         expect(allGenres).to.eql([
-          { "name": "alternate history" },
-          { "name": "fiction" },
-          { "name": "fantasy" },
+          { 'name': 'alternate history' },
+          { 'name': 'fiction' },
+          { 'name': 'fantasy' },
         ]);
       });
     });
@@ -167,6 +167,52 @@ context('Books Database functions', function () {
         .then(() => books.getAllBooks())
         .then(newAllBooks => {
           expect(newAllBooks.length).to.eql(allBooksLength + 1);
+        });
+      });
+    });
+  });
+
+  describe('addOrEditAuthors', function () {
+
+    it('Should update the author of a given book', function () {
+      let authors = [{ firstName: 'Patrick', lastName: 'Kallas', }];
+      return books.addOrEditAuthors(1, authors)
+      .then(() => books.getOneBook(1))
+      .then(book => {
+        expect(book).to.eql({
+          id: 1,
+          title: 'How Few Remain',
+          price: '4.54',
+          img_url: 'How Few Remain Image',
+          in_stock: 5,
+          isbn: '8487582',
+          publisher: 'Del Rey',
+          authors: [{ id: 4, first_name: 'Patrick', last_name: 'Kallas' }],
+          genres: ['alternate history', 'fiction'],
+        });
+      });
+    });
+
+    it('Should assign multiple authors to one book', function () {
+      let authors = [
+        { firstName: 'Author1', lastName: 'Author2', },
+        { firstName: 'Author2', lastName: 'Author2', },
+        { firstName: 'Author3', lastName: 'Author3', }];
+      return books.addOrEditAuthors(1, authors)
+      .then(() => books.getOneBook(1))
+      .then(book => {
+        expect(book).to.eql({
+          id: 1,
+          title: 'How Few Remain',
+          price: '4.54',
+          img_url: 'How Few Remain Image',
+          in_stock: 5,
+          isbn: '8487582',
+          publisher: 'Del Rey',
+          authors: [{ id: 4, first_name: 'Author1', last_name: 'Author2' },
+          { id: 5, first_name: 'Author2', last_name: 'Author2' },
+          { id: 6, first_name: 'Author3', last_name: 'Author3' }],
+          genres: ['alternate history', 'fiction'],
         });
       });
     });
