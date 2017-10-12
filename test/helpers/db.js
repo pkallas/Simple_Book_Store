@@ -57,7 +57,7 @@ const seedUsers = (plaintextPassword, user) => {
   });
 };
 
-const seedCarts = (userId, bookId, quantity) => {
+const seedCarts = (userId, bookId) => {
   return db.query(`INSERT INTO carts (user_id, book_id, quantity)
   VALUES ($1, $2, $3)`, [userId, bookId, 4]);
 };
