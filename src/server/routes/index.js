@@ -6,7 +6,7 @@ const userRoutes = require('./users');
 const middleware = require('../middleware');
 
 router.get('/', (request, response, next) => {
-  books.getAllBookImagesId()
+  books.getAllImagesId()
   .then(books => response.render('books/index', { books }))
   .catch(error => next(error));
 });
