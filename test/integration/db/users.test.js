@@ -157,4 +157,23 @@ context('Users database functions', function () {
       });
     });
   });
+
+  describe('getCart', function () {
+
+    it('Should get the items in a users cart', function () {
+      return users.getCart(1)
+      .then(cart => {
+        expect(cart).to.eql([{
+          'id': 1,
+          'price': '4.54',
+          'quantity': 4,
+          'title': 'How Few Remain',
+        }]);
+      });
+    });
+
+    it('Should throw an error if not given an integer', function () {
+      return expect(users.getCart('bob')).to.eventually.be.rejected;
+    });
+  });
 });
