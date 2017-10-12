@@ -134,4 +134,19 @@ context('Books Database functions', function () {
       });
     });
   });
+
+  describe('deleteBook', function () {
+    it('Should delete the book with the given id', function () {
+      let allBooksLength = 0;
+      return books.getAllBooks()
+      .then(allBooks => {
+        allBooksLength = allBooks.length;
+        return books.deleteBook(1)
+        .then(() => books.getAllBooks)
+        .then(allBooks => {
+          expect(allBooks.length).to.eql(allBooksLength - 1);
+        });
+      });
+    });
+  });
 });
