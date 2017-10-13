@@ -77,5 +77,27 @@ context('users routes', function () {
         expect(response.redirects[0]).to.match(/\//);
       });
     });
+
+    it('Should rerender the page if the username or password is not correct', function () {
+      return request(app)
+      .post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob',
+              password: '123', })
+      .then(response => {
+        expect(response.res.text).to.include('Incorrect username or password');
+      });
+    });
+
+    it('Should rerender the page if the username or password is not correct', function () {
+      return request(app)
+      .post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob1',
+              password: 'badpassword', })
+      .then(response => {
+        expect(response.res.text).to.include('Incorrect username or password');
+      });
+    });
   });
 });
