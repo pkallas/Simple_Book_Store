@@ -180,7 +180,7 @@ context('users routes', function () {
     });
   });
 
-  describe('/logut', function () {
+  describe('/logout', function () {
 
     it('Should end a users session', function () {
       let agent = chai.request.agent(app);
