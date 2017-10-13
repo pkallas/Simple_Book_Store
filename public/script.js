@@ -2,7 +2,7 @@ console.log('Script Loaded');
 
 document.addEventListener('DOMContentLoaded', function () {
   const elements = {
-    deleteButton: document.querySelector('#delete-button'),
+    deleteButton: document.querySelector('#delete-book'),
     addAuthorButton: document.querySelector('#add-author-input'),
     addGenreButton: document.querySelector('#add-genre-input'),
     removeInputButton: function () {
