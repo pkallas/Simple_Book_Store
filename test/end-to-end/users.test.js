@@ -100,4 +100,32 @@ context('users routes', function () {
       });
     });
   });
+
+  describe('/admin', function () {
+
+    it('Should have a response of 401 if the user is not an admin', function () {
+      return request(app)
+      .get('/admin')
+      .then(response => {
+        expect(response).to.have.status(401);
+      })
+      .catch(error => {
+        expect(error.response).to.have.status(401);
+      });
+    });
+
+    it('Should render the page if the user is an admin', function () {
+      let agent = chai.request.agent(app);
+      return agent.post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob',
+              password: 'badpassword', })
+      .then(response => {
+        return agent.get('/admin')
+        .then(response => {
+          expect(response).to.have.status(200);
+        });
+      });
+    });
+  });
 });
