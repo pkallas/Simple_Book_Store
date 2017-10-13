@@ -62,6 +62,10 @@ const seedCarts = (userId, bookId) => {
   VALUES ($1, $2, $3)`, [userId, bookId, 4]);
 };
 
+const makeAdmin = () => {
+  return db.query(`UPDATE users SET role = 'admin' WHERE id = 1`);
+};
+
 module.exports = {
   db,
   truncateBooks,
@@ -76,4 +80,5 @@ module.exports = {
   truncateCarts,
   seedUsers,
   seedCarts,
+  makeAdmin,
 };

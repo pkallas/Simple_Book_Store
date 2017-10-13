@@ -40,6 +40,7 @@ beforeEach(() => {
   .then(() => db.seedUsers('worsepassword', { username: 'jim', email: 'jim@jim.com', }))
   .then(() => db.seedCarts(1, 1))
   .then(() => db.seedCarts(2, 2))
+  .then(() => db.makeAdmin())
   .then(() => console.log('Test database seeded'));
 });
 

@@ -28,4 +28,34 @@ context('Book routes', function () {
       });
     });
   });
+
+  describe('/books/create', function () {
+
+    it('Should respond with 401 when not an admin', function () {
+      return request(app)
+      .get('/books/create')
+      .then(response => {
+        expect(response).to.have.status(401);
+      })
+      .catch(error => {
+        expect(error.response).to.have.status(401);
+      });
+    });
+
+    it('Should render the page when user is an admin', function () {
+      let agent = chai.request.agent(app);
+      agent.post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob',
+              password: 'badpassword', })
+      .then(response => {
+        expect(response).to.have.cookie('cookie.sid');
+
+        return agent.get('/books/create')
+        .then(response => {
+          expect(response).to.have.status(200);
+        });
+      });
+    });
+  });
 });
