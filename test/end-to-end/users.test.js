@@ -56,4 +56,26 @@ context('users routes', function () {
       });
     });
   });
+
+  describe('/login', function () {
+
+    it('Should render the login page', function () {
+      return request(app)
+      .get('/login')
+      .then(response => {
+        expect(response).to.have.status(200);
+      });
+    });
+
+    it('Should redirect to home after a user logs in', function () {
+      return request(app)
+      .post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob',
+              password: 'badpassword', })
+      .then(response => {
+        expect(response.redirects[0]).to.match(/\//);
+      });
+    });
+  });
 });

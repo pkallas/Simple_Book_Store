@@ -1,33 +1,8 @@
-const db = require('../../helpers/db');
 const chai = require('chai');
 const expect = chai.expect;
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const books = require('../../../src/models/db/books');
-
-beforeEach(() => {
-  return db.truncateBooks()
-  .then(() => console.log('Books table from simple_book_store_test has been truncated'));
-});
-
-beforeEach(() => {
-  return db.truncateAuthors()
-  .then(() => console.log('Authors table from simple_book_store_test has been truncated'));
-});
-
-beforeEach(() => {
-  return db.truncateGenres()
-  .then(() => console.log('Genres table from simple_book_store_test has been truncated'));
-});
-
-beforeEach(() => {
-  return db.seedBooks()
-  .then(() => db.seedAuthors())
-  .then(() => db.seedGenres())
-  .then(() => db.seedAuthorsBooks())
-  .then(() => db.seedGenresBooks())
-  .then(() => console.log('Test database seeded'));
-});
 
 context('Books Database functions', function () {
   describe('getOne', function () {
