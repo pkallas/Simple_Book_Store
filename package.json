@@ -4,9 +4,10 @@
   "description": "Learner's Guild Simple Book Store App",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test --recursive --exit",
     "db-init": "psql < seeds/schema.sql && psql simple_book_store < node_modules/connect-pg-simple/table.sql && psql < seeds/load-data.sql",
-    "start": "nodemon"
+    "start": "nodemon",
+    "db-init-test": "psql < test/seeds/test-schema.sql && psql simple_book_store_test < node_modules/connect-pg-simple/table.sql"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,10 @@
   },
   "homepage": "https://github.com/pkallas/Simple_Book_Store#readme",
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^3.0.0",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1"
   },
   "dependencies": {

@@ -38,3 +38,5 @@ app.use(bodyParser.json());
 app.use(middleware.setDefaultResponseLocals);
 
 app.use(routes);
+
+// module.exports = app;
