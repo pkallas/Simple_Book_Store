@@ -196,4 +196,33 @@ context('users routes', function () {
       });
     });
   });
+
+  describe('cart', function () {
+
+    it('Should respond with a success message if an item has been deleted', function () {
+      return request(app).delete('/cart')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send('1, 1')
+      .then(response => {
+        expect(JSON.parse(response.res.text)).to.eql({ 'message': 'Cart Item undefined has been deleted', });
+      });
+    });
+
+    it('Should respond with a success message if an item is added to the cart', function () {
+      let agent = chai.request.agent(app);
+      return agent.post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob',
+              password: 'badpassword', })
+      .then(response => {
+        return agent.put('/cart')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({ bookId: 2,
+                quantity: 5, })
+        .then(response => {
+          expect(JSON.parse(response.res.text)).to.eql({ 'message': 'Item added to cart', });
+        });
+      });
+    });
+  });
 });
