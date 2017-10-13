@@ -39,4 +39,4 @@ app.use(middleware.setDefaultResponseLocals);
 
 app.use(routes);
 
-module.exports = app;
+// module.exports = app;
