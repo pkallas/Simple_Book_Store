@@ -30,10 +30,10 @@ beforeEach(() => {
 });
 
 context('Books Database functions', function () {
-  describe('getOneBook', function () {
+  describe('getOne', function () {
 
     it('Should get all the information of one book', function () {
-      return books.getOneBook(1)
+      return books.getOne(1)
       .then(book => {
         expect(book).to.eql({
           id: 1,
@@ -50,11 +50,11 @@ context('Books Database functions', function () {
     });
 
     it('Should throw an error if not given an integer', function () {
-      return expect(books.getOneBook('Patrick')).to.eventually.be.rejected;
+      return expect(books.getOne('Patrick')).to.eventually.be.rejected;
     });
 
     it('Should get all the information of one book', function () {
-      return books.getOneBook(2)
+      return books.getOne(2)
       .then(book => {
         expect(book).to.eql({
           id: 2,
@@ -71,10 +71,10 @@ context('Books Database functions', function () {
     });
   });
 
-  describe('searchForBooks', function () {
+  describe('search', function () {
 
     it('Should return up to 10 matching books', function () {
-      return books.searchForBooks('harry', 0)
+      return books.search('harry', 0)
       .then(foundBooks => {
         expect(foundBooks).to.eql([{
           id: 1,
@@ -88,7 +88,7 @@ context('Books Database functions', function () {
     });
   });
 
-  describe('updateBook', function () {
+  describe('update', function () {
 
     it('Should update a book with the given id', function () {
       let book = {
@@ -100,8 +100,8 @@ context('Books Database functions', function () {
         isbn: 'Updated isbn',
         publisher: 'Updated publisher',
       };
-      return books.updateBook(book)
-      .then((updatedBook) => books.getOneBook(1))
+      return books.update(book)
+      .then((updatedBook) => books.getOne(1))
       .then(book => {
         expect(book).to.eql({
           id: 1,
@@ -136,11 +136,11 @@ context('Books Database functions', function () {
 
     it('Should delete the book with the given id', function () {
       let allBooksLength = 0;
-      return books.getAllBooks()
+      return books.getAll()
       .then(allBooks => {
         allBooksLength = allBooks.length;
         return books.deleteBook(1)
-        .then(() => books.getAllBooks())
+        .then(() => books.getAll())
         .then(newAllBooks => {
           expect(newAllBooks.length).to.eql(allBooksLength - 1);
         });
@@ -152,7 +152,7 @@ context('Books Database functions', function () {
     });
   });
 
-  describe('createBook', function () {
+  describe('create', function () {
 
     it('Should add a new book to the database', function () {
       let allBooksLength = 0;
@@ -164,11 +164,11 @@ context('Books Database functions', function () {
         inStock: 5,
         publisher: 'New Publisher',
       };
-      return books.getAllBooks()
+      return books.getAll()
       .then(allBooks => {
         allBooksLength = allBooks.length;
-        return books.createBook(book)
-        .then(() => books.getAllBooks())
+        return books.create(book)
+        .then(() => books.getAll())
         .then(newAllBooks => {
           expect(newAllBooks.length).to.eql(allBooksLength + 1);
         });
@@ -181,7 +181,7 @@ context('Books Database functions', function () {
     it('Should update the author of a given book', function () {
       let authors = [{ firstName: 'Patrick', lastName: 'Kallas', }];
       return books.addOrEditAuthors(1, authors)
-      .then(() => books.getOneBook(1))
+      .then(() => books.getOne(1))
       .then(book => {
         expect(book).to.eql({
           id: 1,
@@ -203,7 +203,7 @@ context('Books Database functions', function () {
         { firstName: 'Author2', lastName: 'Author2', },
         { firstName: 'Author3', lastName: 'Author3', }];
       return books.addOrEditAuthors(1, authors)
-      .then(() => books.getOneBook(1))
+      .then(() => books.getOne(1))
       .then(book => {
         expect(book).to.eql({
           id: 1,
@@ -232,7 +232,7 @@ context('Books Database functions', function () {
     it('Should update all the genres of a given book', function () {
       let genres = ['fiction', 'fantasy'];
       return books.addOrEditGenres(1, genres)
-      .then(() => books.getOneBook(1))
+      .then(() => books.getOne(1))
       .then(book => {
         expect(book).to.eql({
           id: 1,
@@ -251,7 +251,7 @@ context('Books Database functions', function () {
     it('Should allow a user to add new genres to the database', function () {
       let genres = ['fiction', 'fantasy', 'some new genre', 'another new genre'];
       return books.addOrEditGenres(1, genres)
-      .then(() => books.getOneBook(1))
+      .then(() => books.getOne(1))
       .then(book => {
         expect(book).to.eql({
           id: 1,
