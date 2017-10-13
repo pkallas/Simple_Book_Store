@@ -179,4 +179,21 @@ context('users routes', function () {
       });
     });
   });
+
+  describe('/logut', function () {
+
+    it('Should end a users session', function () {
+      let agent = chai.request.agent(app);
+      return agent.post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob',
+              password: 'badpassword', })
+      .then(response => {
+        return agent.get('/logout')
+        .then(response => {
+          expect(Object.keys(response.res.headers)).to.not.include('cookie');
+        });
+      });
+    });
+  });
 });
