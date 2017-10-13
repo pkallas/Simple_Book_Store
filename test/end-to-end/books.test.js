@@ -134,4 +134,40 @@ context('Book routes', function () {
       });
     });
   });
+
+  describe('/books/:bookid', function () {
+
+    it('Should render a page with a single books information', function () {
+      return request(app)
+      .get('/books/1')
+      .then(response => {
+        expect(response).to.have.status(200);
+      });
+    });
+
+    it('Should have a status of 401 if a user tries to delete a book and is not an admin', function () {
+      return request(app)
+      .delete('/books/1')
+      .then(response => {
+        expect(response).to.have.status(401);
+      })
+      .catch(error => {
+        expect(error.response).to.have.status(401);
+      });
+    });
+
+    it(`Should respond with 'Book with id 1 was deleted' if the user is an admin`, function () {
+      let agent = chai.request.agent(app);
+      return agent.post('/login')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ login: 'bob',
+              password: 'badpassword', })
+      .then(response => {
+        return agent.delete('/books/1')
+        .then(response => {
+          expect(response.res.text).to.include('Book with id 1 was deleted');
+        });
+      });
+    });
+  });
 });
