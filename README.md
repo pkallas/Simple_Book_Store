@@ -25,6 +25,8 @@ This project is based upon the Learners Guild goal to create a simple book store
 - Fork or clone the repository.
 - Have Node and Postgres installed.
 - Run the command "npm install" in your terminal.
+- Go the seeds folder, click on the load-data.sql file.
+- Change the path on lines 3, 4, 5, 6, 7 to point to the path where you cloned this repository.
 - Run the command "npm run db-init" in your terminal to create the database.
 - Run the command "npm start" in your terminal to start the server.
 - Go to the address that appears in your terminal.
