@@ -7,19 +7,23 @@
     </div>
   <% } %>
   <h1>Sign Up</h1>
-  <form method="post" action="/signup">
-    <div>
-      Username: <input name="username" required>
-    </div>
-    <div>
-      Email: <input type="email" name="email" required>
-    </div>
-    <div>
-      Password: <input type="password" name="password" required>
-    </div>
-    <div>
-      Password Confirmation: <input type="password" name="confirmPassword" required>
-    </div>
+  <form class="form-container" method="post" action="/signup">
+    <label for="username">
+      Username:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input id="username" name="username" required>
+    </label>
+    <label for="email">
+      Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input id="email" type="email" name="email" required>
+    </label>
+    <label for="password">
+      Password:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input id="password" type="password" name="password" required>
+    </label>
+    <label for="confirm-password">
+      Password Confirmation:
+      <input id="confirm-password" type="password" name="confirmPassword" required>
+    </label>
     <input class="signup-button" type="submit" value="Sign Up">
   </form>
 </div>

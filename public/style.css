@@ -243,7 +243,7 @@ ul {
   background-color: #ffad33;
   border-color: #ffad33;
   position: relative;
-  top: 5px;
+  top: 4px;
   left: 105px;
 }
 
@@ -431,6 +431,11 @@ ul {
   border-color: #ff9900;
 }
 
+#confirm-password {
+  position: relative;
+  left: 2px;
+}
+
 /* Styling for the sign up ends here */
 /* Styling for the login starts here */
 
@@ -454,6 +459,15 @@ ul {
 .login-button:hover {
   background-color: #ff9900;
   border-color: #ff9900;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container > label {
+  margin-bottom: 10px;
 }
 
 /* Styling for the login ends here */
